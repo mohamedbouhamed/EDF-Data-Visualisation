@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Firstapp
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.1.
@@ -25,3 +26,6 @@ Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To u
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+=======
+# Angular
+>>>>>>> e178f0ea5ba6b1a7a59726025a30b563b518d75c
