@@ -1,0 +1,13 @@
+.map-container {
+  position: relative;  /* S'assurer que l'élément est positionné relativement à son parent */
+  width: 100%;         /* Prend toute la largeur de la fenêtre */
+  padding: 0;          /* Retirer le padding */
+  margin: 30px auto;   /* Centrer l'élément */
+}
+
+#map {
+  height: 100px;       /* Hauteur fixe pour la carte */
+  width: 100%;         /* S'assurer que la carte occupe toute la largeur du conteneur */
+  border: none;        /* S'assurer qu'il n'y a pas de bordure */
+  outline: none;       /* S'assurer qu'il n'y a pas de contour */
+}

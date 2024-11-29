@@ -1,0 +1,23 @@
+
+/* You can add global styles to this file, and also import other style files */
+.first-course {
+    .course-card {
+      border-top: 5px solid black;
+
+    }
+  }
+  .last-course {
+    .course-card {
+      border-bottom: 5px solid black;
+    }
+  }
+  .even-course {
+    .course-card{
+        background-color: lightcyan;
+    }
+  }
+  .odd-course {
+    .course-card{
+        background-color: grey;
+    }
+  }

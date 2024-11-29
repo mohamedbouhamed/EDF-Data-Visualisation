@@ -1,0 +1,90 @@
+<div class="debut">
+  <div class="titrePrincipal">
+    <div>
+      <h1>Future Code - {{ data.title }}</h1>
+      <div class="subTitle">Lesson 6 : Why angular?</div>
+    </div>
+    <img
+      id="ang_img"
+      src="Angular_gradient.png"
+      alt=""
+      (click)="onLogoClicked()"
+    />
+    </div>
+</div>
+<div class="boutons">
+  <input
+  type="text"
+  placeholder="Changer le titre"
+  value="{{ data.title }}"
+  #inputRef
+  class="demo"
+  (keyup)="onKeyUp(inputRef.value)"
+/>
+<article class="box" data-v-a3976bdc=""><!----><h2 class="title" data-v-a3976bdc="">Selections and transitions</h2><p class="details" data-v-a3976bdc="">Create, update, and animate the DOM based on data without the overhead of a virtual DOM.</p><!----></article>
+  <button class="btn btn-outline-primary">Click me</button> <br />
+  <br>
+  <button class="btn btn-primary " routerLink='home' routerLinkActive="active">Home</button>
+  <button class="btn btn-primary" routerLink='course-card' routerLinkActive="active">course</button>
+  <button class="btn btn-primary" routerLink='carte' routerLinkActive="active">carte</button> 
+  <button class="btn btn-primary" [routerLink]="['/course-list']" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">course-list</button> 
+  @for(course of courses ; track course.id) {
+  <button class="btn btn-primary" [routerLink]="['course']" [queryParams]="{id : course.id}" routerLinkActive="active">course {{course.id}}</button> 
+ }
+  <button class="btn btn-secondary" routerLink="edf" routerLinkActive="active">EDF</button>
+  <button class="btn btn-primary" [routerLink]="['/account']" routerLinkActive="active"  >Account</button> 
+  <div class="btn-group" role="group">
+    <input type="radio" class="btn-check" name="options" id="option1" autocomplete="off" checked>
+    <label class="btn btn-secondary" for="option1">Active</label>
+  
+    <input type="radio" class="btn-check" name="options" id="option2" autocomplete="off">
+    <label class="btn btn-secondary" for="option2">Radio</label>
+  
+    <input type="radio" class="btn-check" name="options" id="option3" autocomplete="off">
+    <label class="btn btn-secondary" for="option3">Radio</label>
+  </div>
+  
+</div>
+<br />
+<router-outlet></router-outlet>
+
+<!-- <div class="fw-bold">Lesson 5</div>
+@for (course of courses[0]|keyvalue; track course.key) {
+  <div>{{course.key}}: {{course.value}}</div>
+}
+<ol>
+  <li><strong>Lowercase : </strong>{{ title | lowercase}}</li>
+  <li><strong>Uppercase : </strong>{{ title | uppercase}}</li>
+  <li><strong>Date : </strong>{{ date | date : 'short'}}</li>
+  <li><strong>Decimal :</strong>{{amount| number:'3.2-3'}}</li>
+  <li><strong>Percentage :</strong>{{total|percent}}</li>
+  <li><strong>Price :</strong>{{price|currency:'GBP':'code'}}</li>
+  <li><strong>Slice :</strong>{{title|slice:0:3}}</li>
+</ol>
+ -->
+
+
+<!-- <ng-container *ngFor="let course of courses">
+  <div  style="display: inline-block;">
+    <app-course-card [course]="course" (viewCourseEvent)="onCourseClicked($event)" />
+  </div>
+</ng-container> -->
+<!-- <div class="cards">
+  @for (course of courses |slice: 0:3; track course.id; let ind=$index; let count=$count;
+  let last=$last; let first=$first; let even=$even; let odd=$odd) {
+  <div style="display: inline-block">
+    <app-course-card
+      [course]="course"
+      [title]="title"
+      (viewCourseEvent)="onCourseClicked($event)"
+      [class.first-course]="first"
+      [class.last-course]="last"
+      [index]="ind"
+      [class.even-course]="even"
+      [class.odd-course]="odd"
+    />
+  </div>
+  }@empty{
+  <h3>No courses found!</h3>
+  }
+</div> --> 

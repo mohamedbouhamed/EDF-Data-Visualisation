@@ -1,0 +1,184 @@
+@import url("https://fonts.googleapis.com/css2?family=Jaldi:wght@400;700&display=swap");
+
+
+:host {
+  font-family: "Jaldi", sans-serif; /* Appliquer la police Roboto */
+  display: flex;
+  flex-direction: column;
+  height: 100vh; /* S'assurer que l'application prend toute la hauteur de la fenêtre */
+}
+header {
+  .header-top {
+    display: flex;
+    justify-content: center; /* Centre la barre de recherche */
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #1348d0;
+    color: white;
+    position: relative;
+
+    .logo {
+      position: absolute;
+      left: 20px;
+      top: 50%; /* Centrage vertical */
+      transform: translateY(-50%); /* Ajustement pour centrer verticalement */
+      height: 40px;
+    }
+
+    .search-form {
+      input {
+        padding: 8px;
+        border: none;
+        border-radius: 20px; /* Coins plus arrondis */
+        width: 300px;
+        color: #293e58;
+      }
+    }
+  }
+}
+
+.content-wrapper {
+  display: flex;
+  flex: 1;
+}
+
+.sidebar {
+  width: 250px;
+  background-color: #ffffff;
+  padding: 20px;
+  border-right: 1px solid #d6edf9;
+  flex-shrink: 0;
+
+  .filter-header {
+    font-size: 1.5rem;
+    background-color: #001a70;
+    color: #fff;
+    border-radius: 3px;
+    padding: 0.33rem 0.67rem;
+    position: relative;
+
+    .clear-filters {
+      background: none;
+      border: none;
+      color: #ffffff;
+      cursor: pointer;
+    }
+  }
+
+  .filters {
+    .filter-title {
+      font-weight: bold;
+      margin-top: 10px;
+      color: #08c;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+
+      li {
+        padding: 5px;
+        background-color: #f9f9f9;
+        margin-bottom: 5px;
+        cursor: pointer;
+      }
+    }
+  }
+}
+
+main {
+  flex: 1;
+  padding: 20px;
+  h1 {
+    color: #2c3f56;
+    font-size: 2rem;
+    margin: 0;
+  }
+  .top-navigation {
+    background-color: #ffffff;
+    padding: 10px 20px;
+    display: flex;
+
+    a {
+      margin-right: 20px;
+      text-decoration: none;
+      color: #08c;
+      font-weight: bold;
+      padding: 5px 10px;
+      border-bottom: 2px solid transparent; /* Ajouter cette ligne */
+      transition: color 0.3s, border-bottom-color 0.3s; /* Pour un effet plus fluide */
+    }
+
+    .activ {
+      color: #f94d00; /* Change la couleur du texte en orange */
+      border-bottom-color: #f94d00; /* Ajoute une ligne orange en dessous */
+    }
+  }
+
+  .info-message {
+    h2 {
+      font-weight: 300;
+      color: #2c3f56;
+      line-height: 1.25;
+      font-size: 1.5rem;
+      margin-right: 0;
+      margin-left: 0;
+      margin-bottom: .6rem;
+    }
+    p {
+      display: block;
+      margin-block-start: 1em;
+      margin-block-end: 1em;
+      margin-inline-start: 0px;
+      margin-inline-end: 0px;
+      unicode-bidi: isolate;
+    }
+  }
+}
+.debut {
+  background-color: black;
+  color: white;
+  font-family: "Playwrite CU", sans-serif;
+  overflow: hidden;
+}
+.bouton{
+  display: block;
+}
+.titrePrincipal {
+  display: flex;
+  align-items: center; /* Aligne verticalement les éléments au centre */
+  position: relative;
+  justify-content: center; /* ymin w yssar */
+}
+
+h1 {
+  margin-right: 20px; /* Ajouter un peu d'espace entre le titre et l'image */
+}
+#ang_img {
+  height: 200px;
+  float: right;
+  margin-right: 50px;
+  cursor: pointer;
+}
+.cards {
+  display: inline-flex;
+  font-family: "Courier New", Courier, monospace;
+}
+
+/* Importer le CSS de Leaflet */
+@import "leaflet/dist/leaflet.css";
+
+/* Styles pour la carte */
+.map-container {
+  height: 400px; /* Taille du carré */
+  width: 400px; /* Même taille pour hauteur et largeur */
+  margin: 0 auto; /* Centrer la carte */
+  border: 2px solid #000; /* Optionnel : ajouter une bordure pour mieux visualiser le carré */
+}
+@mixin activelink() {
+  background-color: red;
+}
+.active {
+  @include activelink();
+}
