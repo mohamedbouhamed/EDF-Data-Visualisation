@@ -5,9 +5,27 @@ export interface ICourse {
   longDescription: string;
   category: CategoryType;
 }
+export interface Dispo {
+  date_et_heure_fuseau_horaire_europe_paris: string; // Format ISO 8601 (e.g., "2024-12-02T11:00:00+00:00")
+  heure_fuseau_horaire_europe_paris: number; // Heure locale en heures (e.g., 12)
+  perimetre_juridique: string; // Ex: "EDF SA"
+  perimetre_spatial: string; // Ex: "France métropolitaine, sans la Corse ni les iles du ponant"
+  spatial_perimeter: string; // Traduction en anglais du périmètre spatial
+  centrale: string; // Nom de la centrale (e.g., "BELLEVILLE")
+  tranche: string; // Tranche de la centrale (e.g., "BELLEVILLE 2")
+  puissance_disponible: number; // Puissance disponible en MW
+  unite: string; // Unité de puissance (e.g., "MW")
+  lien_de_publication_de_l_indisponibilite: string | null; // URL ou null si non disponible
+  point_gps_modifie_pour_afficher_la_carte_opendata: {
+    lon: number; // Longitude GPS (e.g., 3.275676)
+    lat: number; // Latitude GPS (e.g., 47.308946)
+  };
+  derniere_actualisation_opendataedf_fuseau_horaire_europe_paris: string; // Format ISO 8601
+};
+
 export interface DataSets {
   total_count: number;
-  results: DataSetResult[];
+  results: Dispo[];
 }
 export interface DataSetResult {
   visibility: string;

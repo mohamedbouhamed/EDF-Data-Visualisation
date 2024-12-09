@@ -17,7 +17,7 @@
     <h3>No courses found!</h3>
     }
   </div>
-  <div *ngFor="let dataset of datasets">
+<!--   <div *ngFor="let dataset of datasets">
     <p>{{ dataset.dataset_id }}</p>
   </div>
   
@@ -25,6 +25,11 @@
     <div>
     <p>{{ dataset.dataset_id}}</p>
   </div>
+} -->
+@for(dispo of dataset; track $index) {
+  <div>
+  <p>{{ dispo.centrale}} {{ dispo.puissance_disponible}} </p>
+</div>
 }
-<div>{{ dataset1 | json }}</div>
+
 

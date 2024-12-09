@@ -8,14 +8,17 @@ const baseUrl = 'https://opendata.edf.fr/api/explore/v2.1/catalog/datasets'
 })
 export class DatasetService {
   http = inject(HttpClient)
-  getDatasetAllRecords(dataset_id: string): Observable<any>{
-      const params = new HttpParams()
-        .set('limit', '100')
-        .set('offset', '0')
-        .set('include_links', 'false')
-        .set('include_app_metas', 'false');
-    return this.http.get(`${baseUrl}/${dataset_id}/records`, {params})
-  };
+getDatasetAllRecords(dataset_id: string, refinements: Record<string, string[]>={}): Observable<any> {
+  let params = new HttpParams()
+    .set('limit', '100')
+    /* .set('select','heure_fuseau_horaire_europe_paris') */
+  // Ajouter les refinements dynamiquement
+  Object.entries(refinements).forEach(([key, value]) => {
+    params = params.append('refine', `${key}:${value}`);
+  });
+
+  return this.http.get(`${baseUrl}/${dataset_id}/records`, { params });
+}
   getDatasetExportFormats(dataset_id: string): Observable<any>{
     return this.http.get(`${baseUrl}/datasets/${dataset_id}/exports`)
   }
