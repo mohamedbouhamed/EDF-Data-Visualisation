@@ -1,24 +1,41 @@
 import { Injectable, inject } from '@angular/core';
 import{ HttpClient, HttpErrorResponse, HttpParams} from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { DataSets } from '../app.component.models';
 
-const baseUrl = 'https://opendata.edf.fr/api/explore/v2.1/catalog/datasets'
+const baseUrl = 'https://opendata.edf.fr/api/explore/v2.1/catalog/datasets/disponibilite-du-parc-nucleaire-d-edf-sa-present-passe-et-previsionnel'
 @Injectable({
   providedIn: 'root'
 })
 export class DatasetService {
   http = inject(HttpClient)
-getDatasetAllRecords(dataset_id: string, refinements: Record<string, string[]>={}): Observable<any> {
+getDatasetAllRecords( refinements: Record<string, string[]>={}, select: string[]=[], where: string=''): Observable<DataSets> {
   let params = new HttpParams()
+    .set('limit', '100')
+    /* .set('select','heure_fuseau_horaire_europe_paris') */
+  // Ajouter les refinements dynamiquement
+    // Ajouter les champs à sélectionner
+    if (select.length > 0) {
+      params = params.set('select', select.join(',')); // Concatène les champs avec des virgules
+    }
+    if (where) {
+      params = params.set('where', where)
+    }
+  Object.entries(refinements).forEach(([key, value]) => {
+    params = params.append('refine', `${key}:${value}`);
+  });
+  return this.http.get<DataSets>(`${baseUrl}/records`, { params });
+}
+  getCentrale(refinements: Record<string, string[]>={}){
+    let params = new HttpParams()
     .set('limit', '100')
     /* .set('select','heure_fuseau_horaire_europe_paris') */
   // Ajouter les refinements dynamiquement
   Object.entries(refinements).forEach(([key, value]) => {
     params = params.append('refine', `${key}:${value}`);
   });
-
-  return this.http.get(`${baseUrl}/${dataset_id}/records`, { params });
-}
+  return this.http.get<DataSets>(`${baseUrl}/records`, { params });
+  }
   getDatasetExportFormats(dataset_id: string): Observable<any>{
     return this.http.get(`${baseUrl}/datasets/${dataset_id}/exports`)
   }

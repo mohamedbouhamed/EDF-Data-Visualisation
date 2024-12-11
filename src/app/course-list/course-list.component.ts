@@ -15,7 +15,7 @@ import { DatasetService } from '../srvices/dataset.service';
 export class CourseListComponent {
   courses: ICourse[] = courses;
   /* datasets: Array<any> = []; */
-  datasets: DataSets[] = [];
+  datasets: DataSets = {total_count: 0, results:[]};
   dataset : Dispo[] = [];
   title='hello';
   getRefinementsForNow(): Record<string, string[]> {
@@ -35,19 +35,15 @@ export class CourseListComponent {
     //mathod 1 to call data from service
     constructor(private catalogService: CatalogService, private datasetService: DatasetService){};
     ngOnInit(): void {
- /*      this.catalogService.getDatasets().subscribe((data: DataSets) => {
-        this.datasets = data.results; // Récupérer les résultats depuis l'objet DataSets
-        console.log('datasets ', this.datasets);
-      }); */
-      const now = new Date();
-     // Heure avec deux chiffres
-      this.datasetService.getDatasetAllRecords("disponibilite-du-parc-nucleaire-d-edf-sa-present-passe-et-previsionnel",
-        this.getRefinementsForNow()).subscribe((data: DataSets) => {
-        this.datasets = [data]; // Récupérer les résultats depuis l'objet DataSets
-        this.dataset = data.results;
-        console.log('datasets ', this.datasets);
+      // Récupération des données avec les refinements
+      this.datasetService.getDatasetAllRecords(
+        this.getRefinementsForNow(), ["centrale","tranche","point_gps_modifie_pour_afficher_la_carte_opendata","puissance_disponible"],"tranche like '%1'").subscribe((data: DataSets) => {
+        this.datasets = data; // Affecter directement l'objet complet
+        this.dataset = data.results; // Extraire les résultats
+        console.log('datasets', this.datasets);
+        console.log('dataset results', this.dataset);
       });
-    }  
+    }
     /* ngOnInit(): void {
       this.catalogService.getDatasets().subscribe(datasets => {
         this.datasets = Object.values(datasets);

@@ -28,7 +28,7 @@
 } -->
 @for(dispo of dataset; track $index) {
   <div>
-  <p>{{ dispo.centrale}} {{ dispo.puissance_disponible}} </p>
+  <p>{{ dispo.tranche }} {{ dispo.puissance_disponible }} {{ dispo.point_gps_modifie_pour_afficher_la_carte_opendata | json  }}</p>
 </div>
 }
 
