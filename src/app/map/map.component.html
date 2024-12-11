@@ -1,19 +1,25 @@
-<div class="map-container">
+<div class="container">
+  <!-- Conteneur principal -->
+  <div class="map-container">
     <div class="map-frame">
       <div id="map"></div>
     </div>
+    <div class="form-group">
+      <label for="timeRange">Sélectionnez une heure :</label>
+      <input
+        type="range"
+        class="form-range"
+        id="timeRange"
+        min="0"
+        max="23"
+        step="1"
+        value="12"
+      />
+    </div>
   </div>
 
-  <div class="form-group">
-    <label for="timeRange">Sélectionnez une heure :</label>
-    <input
-      type="range"
-      class="form-range"
-      id="timeRange"
-      min="0"
-      max="23"
-      step="1"
-      value="12"
-
-    />
+  <!-- Conteneur pour afficher le composant Histogram -->
+  <div class="histogram-container" *ngIf="selectedCentrale">
+    <app-histogram [centrale]="selectedCentrale"></app-histogram>
   </div>
+</div>

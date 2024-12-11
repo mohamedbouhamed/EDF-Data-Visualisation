@@ -3,19 +3,20 @@ import { Component, OnInit } from '@angular/core';
 import * as L from 'leaflet';
 import { DatasetService } from '../srvices/dataset.service';
 import { DataSets, Dispo } from '../app.component.models';
+import { HistogramComponent } from '../histogram/histogram.component';
 
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.scss'],
   standalone: true,
-  imports: [CommonModule]
+  imports: [CommonModule,HistogramComponent]
 })
 export class MapComponent implements OnInit {
   private map!: L.Map;
   datasets: DataSets = { total_count: 0, results: [] };
   dataset: Dispo[] = [];
-
+  selectedCentrale: Dispo | null = null; // Centrale sélectionnée
   constructor(private datasetService: DatasetService) {}
 
   ngOnInit(): void {
@@ -30,7 +31,7 @@ export class MapComponent implements OnInit {
     ];
   
     this.map = L.map('map', {
-      center: [46.6034, 1.8883], // Centre de la France
+      center: [47.3, 1.8883], // Centre de la France
       zoom: 6,                   // Zoom initial pour voir toute la France
       minZoom: 5,                // Niveau de dézoom minimum
       maxBounds: franceBounds,   // Limiter les mouvements à une zone autour de la France
@@ -42,13 +43,17 @@ export class MapComponent implements OnInit {
       maxZoom: 19,
       attribution: '© OpenStreetMap'
     }).addTo(this.map);
-  
-    // Ajuster automatiquement la vue pour que la France remplisse l'écran
-    this.map.fitBounds(franceBounds);
+
   }
   
 
   private loadCentralesOnMap(): void {
+    const centraleIcon = L.icon({
+      iconUrl: 'centraleNuc.png', // Chemin de l'image de l'icône
+      iconSize: [45, 45],                      // Taille de l'icône
+      iconAnchor: [20, 0],                    // Point d'ancrage
+      popupAnchor: [0, 0]                    // Décalage pour l'info-bulle
+    });  
     this.datasetService.getDatasetAllRecords(
       this.getRefinementsForNow(),
       ['centrale', 'tranche', 'point_gps_modifie_pour_afficher_la_carte_opendata', 'puissance_disponible'],
@@ -57,7 +62,6 @@ export class MapComponent implements OnInit {
       this.datasets = data;
       this.dataset = data.results;
 
-      // Ajouter les marqueurs sur la carte
       this.dataset.forEach((dispo) => {
         const { lat, lon } = dispo.point_gps_modifie_pour_afficher_la_carte_opendata;
         const popupContent = `
@@ -65,12 +69,23 @@ export class MapComponent implements OnInit {
           Puissance disponible : ${dispo.puissance_disponible} MW
         `;
 
-        // Ajouter un marqueur avec une info-bulle
-        L.marker([lat, lon])
+        const marker = L.marker([lat, lon], { icon: centraleIcon })
           .addTo(this.map)
           .bindPopup(popupContent);
+
+        marker.on('click', () => {
+          this.selectCentrale(dispo); // Gestion de la sélection
+        });
       });
     });
+  }
+
+  private selectCentrale(centrale: Dispo): void {
+    this.selectedCentrale = centrale; // Mettre à jour la centrale sélectionnée
+    const { lat, lon } = centrale.point_gps_modifie_pour_afficher_la_carte_opendata;
+
+    // Déplacer la carte vers la centrale sélectionnée
+    this.map.flyTo([lat, lon], 8, { animate: true });
   }
 
   private getRefinementsForNow(): Record<string, string[]> {

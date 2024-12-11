@@ -1,12 +1,35 @@
+.container {
+  display: flex; /* Affichage en ligne */
+  justify-content: space-between;
+  height: 100vh; /* Utilise toute la hauteur de la fenêtre */
+}
+
 .map-container {
-  position: relative;  /* Assure un positionnement relatif */
-  width: 50%;          /* Largeur ajustable pour centrer avec un espace latéral */
-  margin: 30px auto;   /* Centrer horizontalement avec un espace en haut/bas */
+  flex: 2; /* La carte occupe deux fois plus d'espace */
+  display: flex;
+  flex-direction: column;
+  height: 100%; /* S'étend verticalement */
+}
+
+.map-frame {
+  flex: 1; /* Prend tout l'espace restant */
 }
 
 #map {
-  height: 50vh;        /* Hauteur égale à 50% de la hauteur de l'écran */
-  width: 100%;         /* Occupe toute la largeur du conteneur */
-  border: none;        /* Supprime les bordures */
-  outline: none;       /* Supprime les contours */
+  height: calc(100% - 50px); /* Hauteur dynamique, en tenant compte de la hauteur du sélecteur */
+  width: 100%;
+}
+
+.form-group {
+  padding: 10px;
+  background: #f4f4f4; /* Fond clair pour le formulaire */
+  border-top: 1px solid #ddd; /* Ligne de séparation */
+}
+
+.histogram-container {
+  flex: 1; /* La zone de l'histogramme occupe 1/3 de l'espace */
+  background-color: #f4f4f4; /* Fond clair */
+  border-left: 1px solid #ddd; /* Ligne de séparation */
+  overflow-y: auto; /* Permet le scroll si nécessaire */
+  padding: 10px; /* Espacement interne */
 }
