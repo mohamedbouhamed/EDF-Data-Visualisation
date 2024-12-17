@@ -1,35 +1,120 @@
-.container {
-  display: flex; /* Affichage en ligne */
+/* Conteneur principal pour les contrôles */
+.controls-container {
+  display: flex;
   justify-content: space-between;
-  height: 100vh; /* Utilise toute la hauteur de la fenêtre */
+  align-items: center;
+  gap: 20px;
+  background: #f8f9fa;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin: 20px auto;
+  max-width: 600px;
+}
+
+/* Élément individuel (date et heure) */
+.control-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  font-family: Arial, sans-serif;
+}
+
+.control-item label {
+  font-size: 1rem;
+  margin-bottom: 8px;
+  color: #555;
+  font-weight: bold;
+}
+
+/* Style pour le sélecteur de date */
+.styled-date {
+  appearance: none;
+  padding: 8px 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1rem;
+  background: #fff;
+  color: #333;
+  transition: border 0.3s ease;
+}
+
+.styled-date:focus {
+  border: 1px solid #2196F3;
+  outline: none;
+  box-shadow: 0 0 5px rgba(33, 150, 243, 0.5);
+}
+
+/* Style pour le slider d'heure */
+.styled-range {
+  appearance: none;
+  width: 100%;
+  height: 10px;
+  background: linear-gradient(to right, #64b5f6, #bbdefb);
+  border-radius: 5px;
+  outline: none;
+  transition: background 0.3s ease;
+}
+
+.styled-range::-webkit-slider-thumb {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  background: #2196F3;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.styled-range::-webkit-slider-thumb:hover {
+  background: #1976d2;
+}
+
+.styled-range::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  background: #2196F3;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+/* Heure affichée en direct */
+.time-label {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #1976d2;
+}
+
+.container {
+  display: flex;
+  justify-content: center; /* Centre les éléments horizontalement */
+  align-items: center;     /* Centre verticalement */
+  height: 80vh;           /* Utilise toute la hauteur de la fenêtre */
 }
 
 .map-container {
-  flex: 2; /* La carte occupe deux fois plus d'espace */
-  display: flex;
-  flex-direction: column;
-  height: 100%; /* S'étend verticalement */
+  width: 80%; /* Largeur initiale : 80% de la fenêtre */
+  max-width: 80%; /* Limite maximale de la largeur */
+  height: 90%;    /* Hauteur de la carte */
+  margin: auto;   /* Centre horizontalement */
+  transition: width 0.3s ease-in-out, max-width 0.3s ease-in-out; /* Transition fluide */
 }
 
-.map-frame {
-  flex: 1; /* Prend tout l'espace restant */
+.map-container.compact {
+  width: 66%; /* Largeur réduite : 66% */
+  max-width: 66%; /* Limite maximale de la largeur réduite */
 }
 
 #map {
-  height: calc(100% - 50px); /* Hauteur dynamique, en tenant compte de la hauteur du sélecteur */
-  width: 100%;
-}
-
-.form-group {
-  padding: 10px;
-  background: #f4f4f4; /* Fond clair pour le formulaire */
-  border-top: 1px solid #ddd; /* Ligne de séparation */
+  height: 100%; /* La carte occupe toute la hauteur du conteneur */
+  width: 100%;  /* La carte occupe toute la largeur du conteneur */
 }
 
 .histogram-container {
-  flex: 1; /* La zone de l'histogramme occupe 1/3 de l'espace */
-  background-color: #f4f4f4; /* Fond clair */
+  width: 30%;       /* Largeur fixe pour l'Histogram */
+  height: 90%;      /* Aligné avec la hauteur de la carte */
+  background-color: #f4f4f4;
   border-left: 1px solid #ddd; /* Ligne de séparation */
-  overflow-y: auto; /* Permet le scroll si nécessaire */
-  padding: 10px; /* Espacement interne */
+  overflow-y: auto; /* Active le scroll si nécessaire */
+  margin-left: 10px; /* Espace entre la carte et le composant */
 }

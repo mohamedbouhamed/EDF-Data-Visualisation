@@ -9,7 +9,7 @@ const baseUrl = 'https://opendata.edf.fr/api/explore/v2.1/catalog/datasets/dispo
 })
 export class DatasetService {
   http = inject(HttpClient)
-getDatasetAllRecords( refinements: Record<string, string[]>={}, select: string[]=[], where: string=''): Observable<DataSets> {
+getDatasetAllRecords( refinements: Record<string, string[]>={}, select: string[]=[], where: string='', orderBy: string=''): Observable<DataSets> {
   let params = new HttpParams()
     .set('limit', '100')
     /* .set('select','heure_fuseau_horaire_europe_paris') */
@@ -20,6 +20,9 @@ getDatasetAllRecords( refinements: Record<string, string[]>={}, select: string[]
     }
     if (where) {
       params = params.set('where', where)
+    }
+    if (orderBy.length > 0){
+      params = params.set('order_by', orderBy)
     }
   Object.entries(refinements).forEach(([key, value]) => {
     params = params.append('refine', `${key}:${value}`);

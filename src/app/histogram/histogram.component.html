@@ -1,1 +1,22 @@
-<p>histogram works!</p>
+<div class="histogram-card">
+    <div class="histogram-header">
+      <h3>{{ centrale.centrale }}</h3>
+      <button class="close-btn" (click)="close()">×</button>
+    </div>
+  
+    <div class="additional-data">
+      <h4>Disponibilité des tranches :</h4>
+      <div *ngIf="additionalData; else loading" class="data-list">
+        <ul>
+          <li *ngFor="let item of additionalData">
+            <span class="tranche">{{ item.tranche }}</span>
+            <span class="puissance">{{ item.puissance_disponible }} MW</span>
+          </li>
+        </ul>
+      </div>
+      <ng-template #loading>
+        <p>Chargement des données...</p>
+      </ng-template>
+    </div>
+  </div>
+  

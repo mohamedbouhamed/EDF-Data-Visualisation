@@ -13,47 +13,72 @@ import { HistogramComponent } from '../histogram/histogram.component';
   imports: [CommonModule,HistogramComponent]
 })
 export class MapComponent implements OnInit {
+  selectedHour: number = 0; // Heure sélectionnée
+  selectedDate: string = ''; // Date sélectionnée au format "YYYY-MM-DD"
   private map!: L.Map;
   datasets: DataSets = { total_count: 0, results: [] };
   dataset: Dispo[] = [];
   selectedCentrale: Dispo | null = null; // Centrale sélectionnée
+  isCompactView: boolean = false; // Vue compacte activée
+
   constructor(private datasetService: DatasetService) {}
 
   ngOnInit(): void {
     this.initMap();
+    this.setCurrentDate();
+    this.setCurrentHour();
     this.loadCentralesOnMap();
   }
 
-  private initMap(): void {
-    const franceBounds: L.LatLngBoundsExpression = [
-      [55.124199, -5.142222], // Point le plus au nord-ouest de la France
-      [40.371944, 9.561556]   // Point le plus au sud-est de la France
-    ];
-  
-    this.map = L.map('map', {
-      center: [47.3, 1.8883], // Centre de la France
-      zoom: 6,                   // Zoom initial pour voir toute la France
-      minZoom: 5,                // Niveau de dézoom minimum
-      maxBounds: franceBounds,   // Limiter les mouvements à une zone autour de la France
-      maxBoundsViscosity: 0.8    // Empêcher complètement de sortir des limites
-    });
-  
-    // Ajouter les tuiles
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      maxZoom: 19,
-      attribution: '© OpenStreetMap'
-    }).addTo(this.map);
-
+  private setCurrentDate(): void {
+    const today = new Date();
+    this.selectedDate = today.toISOString().split('T')[0]; // Format "YYYY-MM-DD"
   }
-  
+
+  setCurrentHour(): void {
+    const now = new Date();
+    this.selectedHour = now.getHours(); // Obtient l'heure actuelle
+  }
+
+  onDateChange(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    this.selectedDate = input.value; // Met à jour la date sélectionnée
+    console.log(`Date sélectionnée : ${this.selectedDate}`);
+
+    this.loadCentralesOnMap(); // Recharge les données avec la nouvelle date
+  }
+
+  onTimeChange(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    this.selectedHour = parseInt(input.value, 10); // Met à jour l'heure sélectionnée
+    console.log(`Heure sélectionnée : ${this.selectedHour}:00`);
+
+    this.loadCentralesOnMap(); // Recharge les données avec la nouvelle heure
+  }
+
+  private getRefinementsForNow(): Record<string, string[]> {
+    const hour = this.selectedHour.toString().padStart(2, '0'); // Format "HH"
+    return {
+      date_et_heure_fuseau_horaire_europe_paris: [this.selectedDate],
+      heure_fuseau_horaire_europe_paris: [hour],
+    };
+  }
 
   private loadCentralesOnMap(): void {
+    // Nettoyer tous les marqueurs existants sur la carte
+    this.map.eachLayer((layer) => {
+      if (layer instanceof L.Marker) {
+        this.map.removeLayer(layer);
+      }
+    });
+
     const centraleIcon = L.icon({
-      iconUrl: 'centraleNuc.png', // Chemin de l'image de l'icône
-      iconSize: [45, 45],                      // Taille de l'icône
-      iconAnchor: [20, 0],                    // Point d'ancrage
-      popupAnchor: [0, 0]                    // Décalage pour l'info-bulle
-    });  
+      iconUrl: 'centraleNuc.png',
+      iconSize: [45, 45],
+      iconAnchor: [20, 0],
+      popupAnchor: [0, 0],
+    });
+
     this.datasetService.getDatasetAllRecords(
       this.getRefinementsForNow(),
       ['centrale', 'tranche', 'point_gps_modifie_pour_afficher_la_carte_opendata', 'puissance_disponible'],
@@ -77,24 +102,53 @@ export class MapComponent implements OnInit {
           this.selectCentrale(dispo); // Gestion de la sélection
         });
       });
+
+      // Mettre à jour les données de la centrale sélectionnée si elle existe
+      if (this.selectedCentrale) {
+        this.updateHistogram();
+      }
     });
   }
 
-  private selectCentrale(centrale: Dispo): void {
-    this.selectedCentrale = centrale; // Mettre à jour la centrale sélectionnée
-    const { lat, lon } = centrale.point_gps_modifie_pour_afficher_la_carte_opendata;
-
-    // Déplacer la carte vers la centrale sélectionnée
-    this.map.flyTo([lat, lon], 8, { animate: true });
+  private updateHistogram(): void {
+    const centraleId = this.selectedCentrale?.tranche; // Identifiant unique (tranche ici)
+    this.selectedCentrale = this.dataset.find((dispo) => dispo.tranche === centraleId) || null;
   }
 
-  private getRefinementsForNow(): Record<string, string[]> {
-    const now = new Date();
-    const date = now.toISOString().slice(0, 10).replace(/-/g, '/'); // Format "YYYY/MM/DD"
-    const hour = now.getHours().toString().padStart(2, '0'); // Format "HH"
-    return {
-      date_et_heure_fuseau_horaire_europe_paris: [date],
-      heure_fuseau_horaire_europe_paris: [hour]
-    };
+  private initMap(): void {
+    const franceBounds: L.LatLngBoundsExpression = [
+      [55.124199, -5.142222], // Point le plus au nord-ouest de la France
+      [40.371944, 9.561556], // Point le plus au sud-est de la France
+    ];
+
+    this.map = L.map('map', {
+      center: [47.3, 1.8883], // Centre de la France
+      zoom: 6, // Zoom initial
+      minZoom: 6, // Niveau de dézoom minimum
+      maxBounds: franceBounds, // Limiter les mouvements à une zone autour de la France
+      maxBoundsViscosity: 0.8, // Empêcher complètement de sortir des limites
+    });
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '© OpenStreetMap',
+    }).addTo(this.map);
+  }
+
+  private selectCentrale(centrale: Dispo): void {
+    this.selectedCentrale = centrale;
+    this.isCompactView = true; // Réduire la largeur de la carte
+    const { lat, lon } = centrale.point_gps_modifie_pour_afficher_la_carte_opendata;
+
+    setTimeout(() => {
+      this.map.invalidateSize(); // Recalcule la taille de la carte
+      this.map.flyTo([lat, lon], 8, { animate: true }); // Recentre sur la centrale sélectionnée
+    });
+  }
+
+  closeHistogram(): void {
+    this.selectedCentrale = null; // Supprime la centrale sélectionnée
+    this.isCompactView = false; // Désactive la vue compacte
+    this.map.flyTo([47.3, 1.8883], 6, { animate: true }); // Recentre sur la position par défaut
   }
 }

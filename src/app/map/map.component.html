@@ -1,25 +1,44 @@
-<div class="container">
-  <!-- Conteneur principal -->
-  <div class="map-container">
-    <div class="map-frame">
-      <div id="map"></div>
-    </div>
-    <div class="form-group">
-      <label for="timeRange">Sélectionnez une heure :</label>
-      <input
-        type="range"
-        class="form-range"
-        id="timeRange"
-        min="0"
-        max="23"
-        step="1"
-        value="12"
-      />
-    </div>
+<div class="controls-container">
+  <!-- Sélecteur de Date -->
+  <div class="control-item date-picker">
+    <label for="dateSelect">📅 Date :</label>
+    <input
+      type="date"
+      id="dateSelect"
+      class="styled-date"
+      [value]="selectedDate"
+      (change)="onDateChange($event)"
+    />
   </div>
 
-  <!-- Conteneur pour afficher le composant Histogram -->
-  <div class="histogram-container" *ngIf="selectedCentrale">
-    <app-histogram [centrale]="selectedCentrale"></app-histogram>
+  <!-- Slider d'Heure -->
+  <div class="control-item time-picker">
+    <label for="timeRange">⏰ Heure : <span class="time-label">{{ selectedHour | number: '2.0' }}:00</span></label>
+    <input
+      type="range"
+      id="timeRange"
+      class="styled-range"
+      min="0"
+      max="23"
+      step="1"
+      [value]="selectedHour"
+      (input)="onTimeChange($event)"
+    />
   </div>
 </div>
+<div class="container">
+  <div class="map-container" [class.compact]="isCompactView">
+    <div id="map"></div>
+  </div>
+  <div class="histogram-container" *ngIf="selectedCentrale">
+    <app-histogram
+      [centrale]="selectedCentrale"
+      [selectedDate]="selectedDate"
+      [selectedHour]="selectedHour"
+      (closePanel)="closeHistogram()">
+    </app-histogram>
+  </div>  
+
+</div>
+
+
