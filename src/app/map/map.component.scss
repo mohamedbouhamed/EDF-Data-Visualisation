@@ -14,6 +14,36 @@
   --transition: all 0.3s ease;
 }
 
+header {
+  .header-top {
+    display: flex;
+    justify-content: center; /* Centre la barre de recherche */
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #1348d0;
+    color: white;
+    position: relative;
+
+    .logo {
+      position: absolute;
+      left: 20px;
+      top: 50%; /* Centrage vertical */
+      transform: translateY(-50%); /* Ajustement pour centrer verticalement */
+      height: 40px;
+    }
+
+    .search-form {
+      input {
+        padding: 8px;
+        border: none;
+        border-radius: 20px; /* Coins plus arrondis */
+        width: 300px;
+        color: #293e58;
+      }
+    }
+  }
+}
+
 /* Layout principal */
 .dashboard {
   display: flex;
