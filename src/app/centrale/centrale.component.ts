@@ -1,49 +1,88 @@
-import { Component, EventEmitter, Input, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { Dispo } from '../app.component.models';
 import { CommonModule } from '@angular/common';
 import { DatasetService } from '../srvices/dataset.service';
 @Component({
-  selector: 'app-histogram',
+  selector: 'app-centrale',
   standalone: true,
   imports: [CommonModule],
   templateUrl: './centrale.component.html',
   styleUrl: './centrale.component.scss'
 })
-export class CentraleComponent {
+export class CentraleComponent implements OnChanges {
   @Input() centrale!: Dispo;
-  @Input() selectedHour!: number; // Reçoit l'heure sélectionnée
-  @Input() selectedDate!: string; // Reçoit l'heure sélectionnée
-  @Output() closePanel = new EventEmitter<void>(); // Événement pour fermer le panneau
+  @Input() selectedHour!: number;
+  @Input() selectedDate!: string;
+  @Output() closePanel = new EventEmitter<void>();
 
-  additionalData: any = null; // Stocke les données récupérées pour l'histogramme
+  additionalData: Dispo[] | null = null;
+  isVisible: boolean = false;
 
   constructor(private datasetService: DatasetService) {}
+
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['centrale'] && this.centrale) {
-      this.fetchAdditionalData(); // Récupère les données pour la centrale sélectionnée
+      this.isVisible = true;
+      this.fetchAdditionalData();
     }
   }
+
   private getRefinements(): Record<string, string[]> {
-    const hour = this.selectedHour.toString().padStart(2, '0'); // Format "HH"
+    const hour = this.selectedHour.toString().padStart(2, '0');
     return {
       date_et_heure_fuseau_horaire_europe_paris: [this.selectedDate],
       heure_fuseau_horaire_europe_paris: [hour],
     };
   }
+
   fetchAdditionalData(): void {
-    const refinements = this.getRefinements(); // Utilise la date et l'heure sélectionnées
+    const refinements = this.getRefinements();
     this.datasetService.getDatasetAllRecords(
       refinements,
       ['centrale', 'tranche', 'point_gps_modifie_pour_afficher_la_carte_opendata', 'puissance_disponible'],
-      "centrale = '" + this.centrale.centrale + "'",
+      `centrale = '${this.centrale.centrale}'`,
       "tranche ASC"
-    ).subscribe((data) => {
-      this.additionalData = data.results;
-      console.log('Données récupérées pour l’histogramme :', this.additionalData);
+    ).subscribe({
+      next: (data) => {
+        this.additionalData = data.results;
+        console.log('Données récupérées pour l\'histogramme :', this.additionalData);
+      },
+      error: (error) => {
+        console.error('Erreur lors de la récupération des données :', error);
+        this.additionalData = null;
+      }
     });
   }
 
   close(): void {
-    this.closePanel.emit(); // Émet l'événement lorsqu'on clique sur le bouton
+    this.isVisible = false;
+    // Attendre la fin de l'animation avant d'émettre l'événement
+    setTimeout(() => {
+      this.closePanel.emit();
+    }, 300); // 300ms correspond à la durée de l'animation CSS
+  }
+
+  calculateTotalPower(): number {
+    if (!this.additionalData) return 0;
+    return this.additionalData.reduce((total, item) => total + item.puissance_disponible, 0);
+  }
+
+  calculatePowerPercentage(power: number): number {
+    if (!this.additionalData || !this.additionalData.length) return 0;
+    const maxPower = Math.max(...this.additionalData.map(item => item.puissance_disponible));
+    return maxPower === 0 ? 0 : (power / maxPower) * 100;
+  }
+
+  // Helpers pour le formatage
+  formatDate(date: string): string {
+    return new Date(date).toLocaleDateString('fr-FR', {
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric'
+    });
+  }
+
+  formatHour(hour: number): string {
+    return hour.toString().padStart(2, '0') + ':00';
   }
 }

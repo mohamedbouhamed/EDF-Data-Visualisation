@@ -1,24 +1,46 @@
-<div class="histogram-card">
+<div class="histogram-container" [class.slide-in]="isVisible">
+  <div class="histogram-card">
     <div class="histogram-header">
-      <h3>{{ centrale.centrale }}</h3>
-      <button class="close-btn" (click)="close()">×</button>
-    </div>
-  
-  
-    <div class="donnees-tranches">
-      <h4>Disponibilité des tranches</h4>
-      <p class="timestamp">Le {{ selectedDate }} à {{ selectedHour | number: '2.0' }}:00</p>
-      <div *ngIf="additionalData; else loading" class="data-list">
-        <ul>
-          <li *ngFor="let item of additionalData">
-            <span class="tranche">{{ item.tranche }}</span>
-            <span class="puissance">{{ item.puissance_disponible }} MW</span>
-          </li>
-        </ul>
+      <div class="header-content">
+        <h3>{{ centrale.centrale }}</h3>
+        <div class="timestamp-badge">
+          <span class="date">{{ selectedDate | date:'dd MMM yyyy' }}</span>
+          <span class="time">{{ selectedHour | number:'2.0' }}:00</span>
+        </div>
       </div>
+      <button class="close-btn" (click)="close()" aria-label="Fermer">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M18 6L6 18M6 6l12 12"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="donnees-tranches">
+      <div class="section-header">
+        <h4>Disponibilité des tranches</h4>
+        <div class="total-power" *ngIf="additionalData">
+          Total: {{ calculateTotalPower() }} MW
+        </div>
+      </div>
+
+      <div *ngIf="additionalData; else loading" class="data-list">
+        <div class="tranche-item" *ngFor="let item of additionalData">
+          <div class="tranche-info">
+            <span class="tranche-name">{{ item.tranche }}</span>
+            <span class="power-value">{{ item.puissance_disponible }} MW</span>
+          </div>
+          <div class="power-bar">
+            <div class="power-fill" [style.width]="calculatePowerPercentage(item.puissance_disponible) + '%'"></div>
+          </div>
+        </div>
+      </div>
+
       <ng-template #loading>
-        <p>Chargement des données...</p>
+        <div class="loading-spinner">
+          <div class="spinner"></div>
+          <p>Chargement des données...</p>
+        </div>
       </ng-template>
     </div>
   </div>
-  
+</div>

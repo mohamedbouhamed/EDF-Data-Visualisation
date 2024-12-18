@@ -20,6 +20,7 @@ export class MapComponent implements OnInit {
   dataset: Dispo[] = [];
   selectedCentrale: Dispo | null = null; // Centrale sélectionnée
   isCompactView: boolean = false; // Vue compacte activée
+  isLoading: boolean = false;
 
   constructor(private datasetService: DatasetService) {}
 
@@ -46,7 +47,7 @@ export class MapComponent implements OnInit {
     this.selectedDate = input.value; // Met à jour la date sélectionnée
     console.log(`Date sélectionnée : ${this.selectedDate}`);
 
-    this.loadCentralesOnMap(); // Recharge les données avec la nouvelle date
+    this.refreshData(); // Recharge les données avec la nouvelle date
   }
 
   onTimeChange(event: Event): void {
@@ -54,7 +55,7 @@ export class MapComponent implements OnInit {
     this.selectedHour = parseInt(input.value, 10); // Met à jour l'heure sélectionnée
     console.log(`Heure sélectionnée : ${this.selectedHour}:00`);
 
-    this.loadCentralesOnMap(); // Recharge les données avec la nouvelle heure
+    this.refreshData(); // Recharge les données avec la nouvelle heure
   }
 
   private getRefinementsForNow(): Record<string, string[]> {
@@ -66,6 +67,7 @@ export class MapComponent implements OnInit {
   }
 
   private loadCentralesOnMap(): void {
+    this.isLoading = true; // Début du chargement
     const centraleIcon = L.icon({
       iconUrl: 'centraleNuc.png',
       iconSize: [45, 45],
@@ -77,43 +79,53 @@ export class MapComponent implements OnInit {
       this.getRefinementsForNow(),
       ['centrale', 'tranche', 'point_gps_modifie_pour_afficher_la_carte_opendata', 'puissance_disponible'],
       "tranche like '%1'"
-    ).subscribe((data: DataSets) => {
-      this.datasets = data;
-      this.dataset = data.results;
+    ).subscribe({
+      next: (data: DataSets) => {
+        this.datasets = data;
+        this.dataset = data.results;
   
-      this.dataset.forEach((dispo) => {
-        const { lat, lon } = dispo.point_gps_modifie_pour_afficher_la_carte_opendata;
-        const popupContent = `
-          <b>${dispo.centrale}</b> - ${dispo.tranche}<br>
-          Puissance disponible : ${dispo.puissance_disponible} MW
-        `;
+        this.dataset.forEach((dispo) => {
+          const { lat, lon } = dispo.point_gps_modifie_pour_afficher_la_carte_opendata;
+          const popupContent = `
+            <b>${dispo.centrale}</b> - ${dispo.tranche}<br>
+            Puissance disponible : ${dispo.puissance_disponible} MW
+          `;
   
-        // Si le marqueur existe, mettez à jour ses informations
-        if (this.markers.has(dispo.tranche)) {
-          const marker = this.markers.get(dispo.tranche);
-          marker?.setPopupContent(popupContent); // Met à jour le contenu de la popup
-        } else {
-          // Sinon, créez un nouveau marqueur et ajoutez-le à la carte
-          const marker = L.marker([lat, lon], { icon: centraleIcon })
-            .addTo(this.map)
-            .bindPopup(popupContent);
+          // Si le marqueur existe, mettez à jour ses informations
+          if (this.markers.has(dispo.tranche)) {
+            const marker = this.markers.get(dispo.tranche);
+            marker?.setPopupContent(popupContent); // Met à jour le contenu de la popup
+          } else {
+            // Sinon, créez un nouveau marqueur et ajoutez-le à la carte
+            const marker = L.marker([lat, lon], { icon: centraleIcon })
+              .addTo(this.map)
+              .bindPopup(popupContent);
   
-          // Ajoutez un gestionnaire d'événements pour la sélection
-          marker.on('click', () => {
-            this.selectCentrale(dispo);
-          });
+            // Ajoutez un gestionnaire d'événements pour la sélection
+            marker.on('click', () => {
+              this.selectCentrale(dispo);
+            });
   
-          // Stockez le marqueur dans la Map
-          this.markers.set(dispo.tranche, marker);
+            // Stockez le marqueur dans la Map
+            this.markers.set(dispo.tranche, marker);
+          }
+        });
+  
+        // Mettre à jour les données de la centrale sélectionnée si elle existe
+        if (this.selectedCentrale) {
+          this.updateHistogram();
         }
-      });
-
-      // Mettre à jour les données de la centrale sélectionnée si elle existe
-      if (this.selectedCentrale) {
-        this.updateHistogram();
+      },
+      error: (err) => {
+        console.error('Erreur lors du chargement des données :', err);
+        this.isLoading = false; // Arrêtez le chargement même en cas d'erreur
+      },
+      complete: () => {
+        this.isLoading = false; // Arrêt du loading une fois terminé
       }
     });
   }
+  
   
 
 
@@ -152,7 +164,10 @@ export class MapComponent implements OnInit {
       this.map.flyTo([lat, lon], 8, { animate: true }); // Recentre sur la centrale sélectionnée
     });
   }
-
+  private refreshData(): void {
+    this.isLoading = true;
+    this.loadCentralesOnMap();
+  }
   closeHistogram(): void {
     this.selectedCentrale = null; // Supprime la centrale sélectionnée
     this.isCompactView = false; // Désactive la vue compacte

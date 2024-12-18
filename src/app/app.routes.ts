@@ -28,9 +28,6 @@ export const routes: Routes = [
     path: 'carte',
     component: MapComponent,
   },
-  { 
-    path: 'carte/centrale/:id', component: MapComponent 
-  },
   {
     path: 'course',
     component: CourseDetailsComponent,

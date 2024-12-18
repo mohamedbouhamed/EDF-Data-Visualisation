@@ -1,120 +1,206 @@
-/* Conteneur principal pour les contrôles */
-.controls-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 20px;
-  background: #f8f9fa;
-  padding: 15px;
-  border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  margin: 20px auto;
-  max-width: 600px;
+/* Variables globales */
+:root {
+  --primary-color: #3e4bff;
+  --primary-light: #6f7bff;
+  --primary-dark: #1a237e;
+  --gray-100: #f8f9fa;
+  --gray-200: #e9ecef;
+  --gray-300: #dee2e6;
+  --gray-400: #ced4da;
+  --gray-500: #adb5bd;
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+  --transition: all 0.3s ease;
 }
 
-/* Élément individuel (date et heure) */
-.control-item {
-  flex: 1;
+/* Layout principal */
+.dashboard {
   display: flex;
   flex-direction: column;
-  font-family: Arial, sans-serif;
+  height: 100vh;
+  background-color: var(--gray-100);
+  overflow: hidden;
+}
+
+/* Panneau de contrôle */
+.controls-panel {
+  padding: 1rem;
+  background: white;
+  box-shadow: var(--shadow-md);
+  z-index: 10;
+}
+
+.controls-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  gap: 2rem;
+  padding: 1rem;
+  background: white;
+  border-radius: 12px;
+}
+
+/* Styles des contrôles */
+.control-item {
+  flex: 1;
 }
 
 .control-item label {
-  font-size: 1rem;
-  margin-bottom: 8px;
-  color: #555;
-  font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 500;
+  color: var(--gray-500);
+  margin-bottom: 0.5rem;
 }
 
-/* Style pour le sélecteur de date */
+.icon {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
 .styled-date {
-  appearance: none;
-  padding: 8px 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--gray-300);
+  border-radius: 8px;
   font-size: 1rem;
-  background: #fff;
-  color: #333;
-  transition: border 0.3s ease;
+  color: var(--primary-dark);
+  transition: var(--transition);
 }
 
 .styled-date:focus {
-  border: 1px solid #2196F3;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(62, 75, 255, 0.1);
   outline: none;
-  box-shadow: 0 0 5px rgba(33, 150, 243, 0.5);
 }
 
-/* Style pour le slider d'heure */
 .styled-range {
-  appearance: none;
   width: 100%;
-  height: 10px;
-  background: linear-gradient(to right, #64b5f6, #bbdefb);
-  border-radius: 5px;
-  outline: none;
-  transition: background 0.3s ease;
+  height: 6px;
+  background: linear-gradient(to right, var(--primary-color), var(--primary-light));
+  border-radius: 3px;
+  cursor: pointer;
 }
 
 .styled-range::-webkit-slider-thumb {
   appearance: none;
   width: 20px;
   height: 20px;
-  background: #2196F3;
+  background: white;
+  border: 2px solid var(--primary-color);
   border-radius: 50%;
   cursor: pointer;
-  transition: background 0.3s ease;
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition);
 }
 
 .styled-range::-webkit-slider-thumb:hover {
-  background: #1976d2;
+  transform: scale(1.1);
 }
 
-.styled-range::-moz-range-thumb {
-  width: 20px;
-  height: 20px;
-  background: #2196F3;
-  border-radius: 50%;
-  cursor: pointer;
-}
-
-/* Heure affichée en direct */
 .time-label {
-  font-size: 1.2rem;
-  font-weight: bold;
-  color: #1976d2;
+  font-weight: 600;
+  color: var(--primary-color);
 }
 
-.container {
+/* Conteneur principal */
+.content-container {
+  flex: 1;
   display: flex;
-  justify-content: center; /* Centre les éléments horizontalement */
-  align-items: center;     /* Centre verticalement */
-  height: 80vh;           /* Utilise toute la hauteur de la fenêtre */
+  justify-content: center;
+  gap: 1rem;
+  padding: 1rem;
+  height: calc(100vh - 120px);
 }
 
-.map-container {
-  width: 80%; /* Largeur initiale : 80% de la fenêtre */
-  max-width: 80%; /* Limite maximale de la largeur */
-  height: 90%;    /* Hauteur de la carte */
-  margin: auto;   /* Centre horizontalement */
-  transition: width 0.3s ease-in-out, max-width 0.3s ease-in-out; /* Transition fluide */
+
+.map-wrapper {
+  flex: 0.75;
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+  transition: var(--transition);
 }
 
-.map-container.compact {
-  width: 66%; /* Largeur réduite : 66% */
-  max-width: 66%; /* Limite maximale de la largeur réduite */
+.map-wrapper.compact {
+  flex: 65%;
 }
 
 #map {
-  height: 100%; /* La carte occupe toute la hauteur du conteneur */
-  width: 100%;  /* La carte occupe toute la largeur du conteneur */
+  height: 100%;
+  width: 100%;
 }
 
-.histogram-container {
-  width: 30%;       /* Largeur fixe pour l'Histogram */
-  height: 90%;      /* Aligné avec la hauteur de la carte */
-  background-color: #8f3333;
-  border-left: 1px solid #ddd; /* Ligne de séparation */
-  overflow-y: auto; /* Active le scroll si nécessaire */
-  margin-left: 10px; /* Espace entre la carte et le composant */
+/* Composant Centrale */
+.centrale-panel {
+  flex: 0 0 35%;
+  opacity: 0;
+  transform: translateX(100%);
+  animation: slideIn 0.3s forwards;
+  overflow: auto;
+}
+
+@keyframes slideIn {
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Loading Overlay */
+.loading-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--gray-200);
+  border-top-color: var(--primary-color);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .controls-container {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .content-container {
+    flex-direction: column;
+  }
+
+  .map-wrapper.compact {
+    flex: 1;
+  }
+
+  .centrale-panel {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    max-width: 100%;
+    z-index: 1100;
+  }
 }
