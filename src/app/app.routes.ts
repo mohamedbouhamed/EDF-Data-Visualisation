@@ -28,12 +28,11 @@ export const routes: Routes = [
     path: 'carte',
     component: MapComponent,
   },
-  {
-    path: 'course',
-    component: CourseDetailsComponent,
+  { 
+    path: 'carte/centrale/:id', component: MapComponent 
   },
   {
-    path: 'course-list/:id',
+    path: 'course',
     component: CourseDetailsComponent,
   },
   {

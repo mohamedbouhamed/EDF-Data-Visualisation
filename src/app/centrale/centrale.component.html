@@ -4,8 +4,10 @@
       <button class="close-btn" (click)="close()">×</button>
     </div>
   
-    <div class="additional-data">
-      <h4>Disponibilité des tranches :</h4>
+  
+    <div class="donnees-tranches">
+      <h4>Disponibilité des tranches</h4>
+      <p class="timestamp">Le {{ selectedDate }} à {{ selectedHour | number: '2.0' }}:00</p>
       <div *ngIf="additionalData; else loading" class="data-list">
         <ul>
           <li *ngFor="let item of additionalData">

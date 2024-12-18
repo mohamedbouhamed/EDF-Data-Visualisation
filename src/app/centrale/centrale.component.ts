@@ -6,10 +6,10 @@ import { DatasetService } from '../srvices/dataset.service';
   selector: 'app-histogram',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './histogram.component.html',
-  styleUrl: './histogram.component.scss'
+  templateUrl: './centrale.component.html',
+  styleUrl: './centrale.component.scss'
 })
-export class HistogramComponent {
+export class CentraleComponent {
   @Input() centrale!: Dispo;
   @Input() selectedHour!: number; // Reçoit l'heure sélectionnée
   @Input() selectedDate!: string; // Reçoit l'heure sélectionnée

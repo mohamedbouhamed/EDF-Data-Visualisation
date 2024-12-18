@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { HistogramComponent } from './histogram.component';
+import { CentraleComponent } from './centrale.component';
 
 describe('HistogramComponent', () => {
-  let component: HistogramComponent;
-  let fixture: ComponentFixture<HistogramComponent>;
+  let component: CentraleComponent;
+  let fixture: ComponentFixture<CentraleComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HistogramComponent]
+      imports: [CentraleComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(HistogramComponent);
+    fixture = TestBed.createComponent(CentraleComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

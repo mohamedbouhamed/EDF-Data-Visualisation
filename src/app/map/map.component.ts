@@ -3,14 +3,14 @@ import { Component, OnInit } from '@angular/core';
 import * as L from 'leaflet';
 import { DatasetService } from '../srvices/dataset.service';
 import { DataSets, Dispo } from '../app.component.models';
-import { HistogramComponent } from '../histogram/histogram.component';
+import { CentraleComponent } from '../centrale/centrale.component';
 
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.scss'],
   standalone: true,
-  imports: [CommonModule,HistogramComponent]
+  imports: [CommonModule,CentraleComponent]
 })
 export class MapComponent implements OnInit {
   selectedHour: number = 0; // Heure sélectionnée
@@ -29,6 +29,7 @@ export class MapComponent implements OnInit {
     this.setCurrentHour();
     this.loadCentralesOnMap();
   }
+  private markers: Map<string, L.Marker> = new Map(); // Map pour conserver les marqueurs
 
   private setCurrentDate(): void {
     const today = new Date();
@@ -65,20 +66,13 @@ export class MapComponent implements OnInit {
   }
 
   private loadCentralesOnMap(): void {
-    // Nettoyer tous les marqueurs existants sur la carte
-    this.map.eachLayer((layer) => {
-      if (layer instanceof L.Marker) {
-        this.map.removeLayer(layer);
-      }
-    });
-
     const centraleIcon = L.icon({
       iconUrl: 'centraleNuc.png',
       iconSize: [45, 45],
       iconAnchor: [20, 0],
       popupAnchor: [0, 0],
     });
-
+  
     this.datasetService.getDatasetAllRecords(
       this.getRefinementsForNow(),
       ['centrale', 'tranche', 'point_gps_modifie_pour_afficher_la_carte_opendata', 'puissance_disponible'],
@@ -86,21 +80,32 @@ export class MapComponent implements OnInit {
     ).subscribe((data: DataSets) => {
       this.datasets = data;
       this.dataset = data.results;
-
+  
       this.dataset.forEach((dispo) => {
         const { lat, lon } = dispo.point_gps_modifie_pour_afficher_la_carte_opendata;
         const popupContent = `
           <b>${dispo.centrale}</b> - ${dispo.tranche}<br>
           Puissance disponible : ${dispo.puissance_disponible} MW
         `;
-
-        const marker = L.marker([lat, lon], { icon: centraleIcon })
-          .addTo(this.map)
-          .bindPopup(popupContent);
-
-        marker.on('click', () => {
-          this.selectCentrale(dispo); // Gestion de la sélection
-        });
+  
+        // Si le marqueur existe, mettez à jour ses informations
+        if (this.markers.has(dispo.tranche)) {
+          const marker = this.markers.get(dispo.tranche);
+          marker?.setPopupContent(popupContent); // Met à jour le contenu de la popup
+        } else {
+          // Sinon, créez un nouveau marqueur et ajoutez-le à la carte
+          const marker = L.marker([lat, lon], { icon: centraleIcon })
+            .addTo(this.map)
+            .bindPopup(popupContent);
+  
+          // Ajoutez un gestionnaire d'événements pour la sélection
+          marker.on('click', () => {
+            this.selectCentrale(dispo);
+          });
+  
+          // Stockez le marqueur dans la Map
+          this.markers.set(dispo.tranche, marker);
+        }
       });
 
       // Mettre à jour les données de la centrale sélectionnée si elle existe
@@ -109,6 +114,8 @@ export class MapComponent implements OnInit {
       }
     });
   }
+  
+
 
   private updateHistogram(): void {
     const centraleId = this.selectedCentrale?.tranche; // Identifiant unique (tranche ici)
