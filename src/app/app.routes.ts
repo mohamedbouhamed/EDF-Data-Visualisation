@@ -10,11 +10,16 @@ import { LoginComponent } from './account/login/login.component';
 import { RegisterComponent } from './account/register/register.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { EdfComponent } from './edf/edf.component';
+import { HistogramComponent } from './histogram/histogram.component';
 
 export const routes: Routes = [
   {
     path: 'course-card',
     component: CourseCardComponent,
+  },
+  {
+  path: 'histogram',
+  component: HistogramComponent
   },
   {
     path: 'home',

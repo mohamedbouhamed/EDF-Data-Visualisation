@@ -9,12 +9,13 @@ import { HighchartsChartModule } from 'highcharts-angular';
 import * as Highcharts from 'highcharts';
 import HC_map from 'highcharts/modules/map';
 import topology from '@highcharts/map-collection/custom/europe.topo.json';
+import { HistogramComponent } from './histogram/histogram.component';
 HC_map(Highcharts);
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet,CourseCardComponent,MapComponent,NgForOf,CommonModule,RouterLink,RouterLinkActive,MyMapComponent,HighchartsChartModule],
+  imports: [RouterOutlet,CourseCardComponent,MapComponent,NgForOf,CommonModule,RouterLink,RouterLinkActive,MyMapComponent,HighchartsChartModule,HistogramComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
