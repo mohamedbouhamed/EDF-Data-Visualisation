@@ -24,13 +24,13 @@
       </div>
 
       <div *ngIf="additionalData; else loading" class="data-list">
-        <div class="tranche-item" *ngFor="let item of additionalData">
+        <div class="tranche-item" *ngFor="let centrale of additionalData" (click)="goToHistogram(centrale.tranche)">
           <div class="tranche-info">
-            <span class="tranche-name">{{ item.tranche }}</span>
-            <span class="power-value">{{ item.puissance_disponible }} MW</span>
+            <span class="tranche-name">{{ centrale.tranche }}</span>
+            <span class="power-value">{{ centrale.puissance_disponible }} MW</span>
           </div>
           <div class="power-bar">
-            <div class="power-fill" [style.width]="calculatePowerPercentage(item.puissance_disponible) + '%'"></div>
+            <div class="power-fill" [style.width]="calculatePowerPercentage(centrale.puissance_disponible) + '%'"></div>
           </div>
         </div>
       </div>

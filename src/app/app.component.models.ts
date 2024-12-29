@@ -1,3 +1,13 @@
+export interface DataSetsTranche {
+  total_count: number;
+  results: DonneeTranche;
+}
+export interface DonneeTranche {
+  map(arg0: (item: DonneeTranche) => number[]): [number, number][];
+  date_et_heure_fuseau_horaire_europe_paris: string;
+  puissance_disponible: number;
+}
+
 export interface ICourse {
   id: number;
   description: string;

@@ -2,6 +2,9 @@ import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from
 import { Dispo } from '../app.component.models';
 import { CommonModule } from '@angular/common';
 import { DatasetService } from '../srvices/dataset.service';
+import { Router } from '@angular/router';
+
+
 @Component({
   selector: 'app-centrale',
   standalone: true,
@@ -18,7 +21,7 @@ export class CentraleComponent implements OnChanges {
   additionalData: Dispo[] | null = null;
   isVisible: boolean = false;
 
-  constructor(private datasetService: DatasetService) {}
+  constructor(private datasetService: DatasetService, private router: Router) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['centrale'] && this.centrale) {
@@ -34,7 +37,12 @@ export class CentraleComponent implements OnChanges {
       heure_fuseau_horaire_europe_paris: [hour],
     };
   }
-
+  goToHistogram(tranche: string): void{
+    this.router.navigate(['/histogram'], {
+      queryParams: { tranche: tranche },
+      state: { tranche: tranche } // Utilisé pour transmettre directement des données si nécessaire
+    });
+  }
   fetchAdditionalData(): void {
     const refinements = this.getRefinements();
     this.datasetService.getDatasetAllRecords(

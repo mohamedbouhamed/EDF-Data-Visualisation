@@ -103,7 +103,13 @@
   padding: 16px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
-
+.tranche-item:hover {
+cursor: pointer;
+}
+.tranche-item:hover .tranche-name,
+.tranche-item:hover .power-value {
+  color: orange; /* Changer la couleur du texte au survol */
+}
 .tranche-info {
   display: flex;
   justify-content: space-between;
