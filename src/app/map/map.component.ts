@@ -30,7 +30,6 @@ export class MapComponent implements OnInit {
     this.setCurrentHour();
     this.loadCentralesOnMap();
   }
-  private markers: Map<string, L.Marker> = new Map(); // Map pour conserver les marqueurs
 
   private setCurrentDate(): void {
     const today = new Date();
@@ -67,12 +66,21 @@ export class MapComponent implements OnInit {
   }
 
   private loadCentralesOnMap(): void {
-    this.isLoading = true; // Début du chargement
+    this.isLoading = true;
+    
+    // Définition de l'icône
     const centraleIcon = L.icon({
       iconUrl: 'centraleNuc.png',
       iconSize: [45, 45],
       iconAnchor: [20, 0],
       popupAnchor: [0, 0],
+    });
+  
+    // Effacer tous les marqueurs existants
+    this.map.eachLayer((layer) => {
+      if (layer instanceof L.Marker) {
+        this.map.removeLayer(layer);
+      }
     });
   
     this.datasetService.getDatasetAllRecords(
@@ -84,6 +92,7 @@ export class MapComponent implements OnInit {
         this.datasets = data;
         this.dataset = data.results;
   
+        // Ajouter les nouveaux marqueurs
         this.dataset.forEach((dispo) => {
           const { lat, lon } = dispo.point_gps_modifie_pour_afficher_la_carte_opendata;
           const popupContent = `
@@ -91,37 +100,25 @@ export class MapComponent implements OnInit {
             Puissance disponible : ${dispo.puissance_disponible} MW
           `;
   
-          // Si le marqueur existe, mettez à jour ses informations
-          if (this.markers.has(dispo.tranche)) {
-            const marker = this.markers.get(dispo.tranche);
-            marker?.setPopupContent(popupContent); // Met à jour le contenu de la popup
-          } else {
-            // Sinon, créez un nouveau marqueur et ajoutez-le à la carte
-            const marker = L.marker([lat, lon], { icon: centraleIcon })
-              .addTo(this.map)
-              .bindPopup(popupContent);
-  
-            // Ajoutez un gestionnaire d'événements pour la sélection
-            marker.on('click', () => {
+          L.marker([lat, lon], { icon: centraleIcon })
+            .addTo(this.map)
+            .bindPopup(popupContent)
+            .on('click', () => {
               this.selectCentrale(dispo);
             });
-  
-            // Stockez le marqueur dans la Map
-            this.markers.set(dispo.tranche, marker);
-          }
         });
   
-        // Mettre à jour les données de la centrale sélectionnée si elle existe
+        // Mettre à jour l'histogramme si une centrale est sélectionnée
         if (this.selectedCentrale) {
           this.updateHistogram();
         }
       },
       error: (err) => {
         console.error('Erreur lors du chargement des données :', err);
-        this.isLoading = false; // Arrêtez le chargement même en cas d'erreur
+        this.isLoading = false;
       },
       complete: () => {
-        this.isLoading = false; // Arrêt du loading une fois terminé
+        this.isLoading = false;
       }
     });
   }

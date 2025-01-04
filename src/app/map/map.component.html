@@ -1,11 +1,3 @@
-<header>
-  <div class="header-top">
-      <img src="edf-logo.png" alt="EDF Logo" class="logo">
-      <form class="search-form">
-          <input type="search" id="search" placeholder="Rechercher les données du groupe EDF">
-      </form>
-  </div>
-</header>
 <main>
   <div class="dashboard">
     <div class="controls-panel">
@@ -55,7 +47,19 @@
       <div class="map-wrapper" [class.compact]="isCompactView">
         <div id="map"></div>
         <div *ngIf="isLoading" class="loading-overlay">
-          <div class="spinner"></div>
+          <div class="loading-content">
+            <div class="loading-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/>
+                <path d="M12 6v6l4 2"/>
+              </svg>
+            </div>
+            <div class="loading-animation">
+              <div class="dot"></div>
+              <div class="dot"></div>
+              <div class="dot"></div>
+            </div>
+          </div>
         </div>
       </div>
 

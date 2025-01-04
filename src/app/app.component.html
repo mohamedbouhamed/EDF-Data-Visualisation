@@ -1,89 +1,73 @@
-<div class="debut">
-  <div class="titrePrincipal">
-    <div>
-      <h1>Future Code - {{ data.title }}</h1>
-      <div class="subTitle">Lesson 6 : Why angular?</div>
+<div class="nav-container">
+  <nav class="main-nav">
+    <div class="header-top">
+      <img src="edf-logo.png" alt="EDF Logo" class="logo">
+      <form class="search-form">
+        <input type="search" id="search" placeholder="Rechercher les données du groupe EDF">
+      </form>
     </div>
-    <img
-      id="ang_img"
-      src="Angular_gradient.png"
-      alt=""
-      (click)="onLogoClicked()"
-    />
+
+    <div class="primary-nav">
+      <!-- Home link -->
+      <a routerLink="/home" routerLinkActive="active" class="nav-link">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+        </svg>
+        Accueil
+      </a>
+
+      <!-- Carte -->
+      <a routerLink="/carte" routerLinkActive="active" class="nav-link">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/>
+        </svg>
+        Carte
+      </a>
+
+      <!-- Histogram -->
+      <a routerLink="/histogram" routerLinkActive="active" class="nav-link">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+        </svg>
+        Histogrammes
+      </a>
+
+      <!-- EDF specific section -->
+      <a routerLink="/edf" routerLinkActive="active" class="nav-link">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+        </svg>
+        EDF
+      </a>
+
+      <!-- Courses dropdown -->
+      <div class="dropdown" (click)="toggleDropdown($event)">
+        <div class="dropdown-toggle" [class.open]="isDropdownOpen">
+          Courses
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+          </svg>
+        </div>
+        <div class="dropdown-menu" [class.show]="isDropdownOpen">
+          <a routerLink="/course-list" routerLinkActive="active" class="dropdown-item">Liste des courses</a>
+          <a routerLink="/course-card" routerLinkActive="active" class="dropdown-item">Course card</a>
+          @for(course of courses; track course.id) {
+            <a [routerLink]="['/course']" [queryParams]="{id: course.id}" routerLinkActive="active" class="dropdown-item">
+              Course {{course.id}}
+            </a>
+          }
+        </div>
+      </div>
+
+      <!-- Account section - pushed to the right -->
+      <a routerLink="/account" routerLinkActive="active" class="nav-link" style="margin-left: auto;">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+        </svg>
+        Compte
+      </a>
     </div>
+  </nav>
 </div>
-<div class="boutons">
-  <input
-  type="text"
-  placeholder="Changer le titre"
-  value="{{ data.title }}"
-  #inputRef
-  class="demo"
-  (keyup)="onKeyUp(inputRef.value)"/>
-  <button class="btn btn-outline-primary">Click me</button> <br />
-  <br>
-  <button class="btn btn-primary " routerLink='home' routerLinkActive="active">Home</button>
-  <button class="btn btn-primary " routerLink='histogram' routerLinkActive="active">Histogram</button>
-  <button class="btn btn-primary" routerLink='course-card' routerLinkActive="active">course</button>
-  <button class="btn btn-primary" routerLink='carte' routerLinkActive="active">carte</button> 
-  <button class="btn btn-primary" [routerLink]="['/course-list']" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">course-list</button> 
-  @for(course of courses ; track course.id) {
-  <button class="btn btn-primary" [routerLink]="['course']" [queryParams]="{id : course.id}" routerLinkActive="active">course {{course.id}}</button> 
- }
-  <button class="btn btn-secondary" routerLink="edf" routerLinkActive="active">EDF</button>
-  <button class="btn btn-primary" [routerLink]="['/account']" routerLinkActive="active"  >Account</button> 
-  <div class="btn-group" role="group">
-    <input type="radio" class="btn-check" name="options" id="option1" autocomplete="off" checked>
-    <label class="btn btn-secondary" for="option1">Active</label>
-  
-    <input type="radio" class="btn-check" name="options" id="option2" autocomplete="off">
-    <label class="btn btn-secondary" for="option2">Radio</label>
-  
-    <input type="radio" class="btn-check" name="options" id="option3" autocomplete="off">
-    <label class="btn btn-secondary" for="option3">Radio</label>
-  </div>
-  
-</div>
-<br />
+
 <router-outlet></router-outlet>
-
-<!-- <div class="fw-bold">Lesson 5</div>
-@for (course of courses[0]|keyvalue; track course.key) {
-  <div>{{course.key}}: {{course.value}}</div>
-}
-<ol>
-  <li><strong>Lowercase : </strong>{{ title | lowercase}}</li>
-  <li><strong>Uppercase : </strong>{{ title | uppercase}}</li>
-  <li><strong>Date : </strong>{{ date | date : 'short'}}</li>
-  <li><strong>Decimal :</strong>{{amount| number:'3.2-3'}}</li>
-  <li><strong>Percentage :</strong>{{total|percent}}</li>
-  <li><strong>Price :</strong>{{price|currency:'GBP':'code'}}</li>
-  <li><strong>Slice :</strong>{{title|slice:0:3}}</li>
-</ol>
- -->
-
-
-<!-- <ng-container *ngFor="let course of courses">
-  <div  style="display: inline-block;">
-    <app-course-card [course]="course" (viewCourseEvent)="onCourseClicked($event)" />
-  </div>
-</ng-container> -->
-<!-- <div class="cards">
-  @for (course of courses |slice: 0:3; track course.id; let ind=$index; let count=$count;
-  let last=$last; let first=$first; let even=$even; let odd=$odd) {
-  <div style="display: inline-block">
-    <app-course-card
-      [course]="course"
-      [title]="title"
-      (viewCourseEvent)="onCourseClicked($event)"
-      [class.first-course]="first"
-      [class.last-course]="last"
-      [index]="ind"
-      [class.even-course]="even"
-      [class.odd-course]="odd"
-    />
-  </div>
-  }@empty{
-  <h3>No courses found!</h3>
-  }
-</div> --> 
