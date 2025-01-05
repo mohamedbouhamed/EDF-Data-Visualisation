@@ -15,7 +15,7 @@ HC_map(Highcharts);
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet,CourseCardComponent,MapComponent,NgForOf,CommonModule,RouterLink,RouterLinkActive,MyMapComponent,HighchartsChartModule,HistogramComponent],
+  imports: [RouterOutlet,CommonModule,RouterLink,RouterLinkActive,HighchartsChartModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })

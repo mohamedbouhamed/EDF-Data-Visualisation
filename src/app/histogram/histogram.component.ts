@@ -17,6 +17,7 @@ import { FormsModule } from '@angular/forms';
 export class HistogramComponent implements OnInit {
   @Input() tranche!: string;
   
+  isChartLoading: boolean = false;
   selectedCentrale: string = '';
   dateLimit: string = '';
   centralesData: Dispo[] = []; // Liste de toutes les centrales
@@ -73,6 +74,7 @@ export class HistogramComponent implements OnInit {
     }
   }
   chargerDonneesTranche(tranche: string): void {
+    this.isChartLoading = true; // Activer le loading
     this.datasetService.getDatasetAllRecords(
       { 
         tranche: [tranche], 
@@ -94,9 +96,11 @@ export class HistogramComponent implements OnInit {
         }
         
         this.afficherDonnees(this.datasets);
+        this.isChartLoading = false; // Désactiver le loading une fois les données affichées
       },
       error: (error) => {
         console.error('Erreur lors de la récupération des données :', error);
+        this.isChartLoading = false; // Désactiver le loading en cas d'erreur
       }
     });
 }
