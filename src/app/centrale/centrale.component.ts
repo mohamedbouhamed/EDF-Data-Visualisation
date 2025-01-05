@@ -17,6 +17,7 @@ export class CentraleComponent implements OnChanges {
   @Input() selectedHour!: number;
   @Input() selectedDate!: string;
   @Output() closePanel = new EventEmitter<void>();
+  @Input() centralesData: Dispo[] = []; // Nouvelle input property
 
   additionalData: Dispo[] | null = null;
   isVisible: boolean = false;
@@ -37,12 +38,25 @@ export class CentraleComponent implements OnChanges {
       heure_fuseau_horaire_europe_paris: [hour],
     };
   }
-  goToHistogram(tranche: string): void{
+// Dans centrale.component.ts
+goToHistogram(tranche: string): void {
+  if (this.additionalData) {
     this.router.navigate(['/histogram'], {
-      queryParams: { tranche: tranche },
-      state: { tranche: tranche } // Utilisé pour transmettre directement des données si nécessaire
+      queryParams: { 
+        tranche: tranche,
+        centrale: this.centrale.centrale,
+        date: this.selectedDate
+      },
+      state: { 
+        selectedCentraleData: {
+          centrale: this.centrale.centrale,
+          tranches: this.additionalData
+        },
+        centralesData: this.centralesData // Ajout de toutes les centrales
+      }
     });
   }
+}
   fetchAdditionalData(): void {
     const refinements = this.getRefinements();
     this.datasetService.getDatasetAllRecords(

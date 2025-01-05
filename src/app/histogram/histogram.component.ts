@@ -1,83 +1,222 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import * as Highcharts from 'highcharts';
 import { HighchartsChartModule } from 'highcharts-angular';
 import { DatasetService } from '../srvices/dataset.service';
-import { DataSets } from '../app.component.models';
+import { DataSets, Dispo } from '../app.component.models';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+
 @Component({
   selector: 'app-histogram',
   standalone: true,
-  imports: [HighchartsChartModule],
+  imports: [HighchartsChartModule, CommonModule, FormsModule],
   templateUrl: './histogram.component.html',
   styleUrl: './histogram.component.scss',
 })
 export class HistogramComponent implements OnInit {
-  datasets:DataSets = {} as DataSets;
-  @Input() tranche!: string; 
+  @Input() tranche!: string;
+  
+  selectedCentrale: string = '';
+  dateLimit: string = '';
+  centralesData: Dispo[] = []; // Liste de toutes les centrales
+  // Nouvelle propriété pour stocker les données
+  selectedCentraleData: {
+    centrale: string;
+    tranches: Dispo[];
+  } | null = null;
+
+  // Getter pour toutes les centrales disponibles
+  get centrales(): string[] {
+    return [...new Set(this.centralesData.map(d => d.centrale))];
+  }
+
+  // Getter pour les tranches de la centrale sélectionnée
+  getTranches(): string[] {
+    if (!this.selectedCentraleData?.tranches) return [];
+    return this.selectedCentraleData.tranches.map(d => d.tranche);
+  }
+
+  constructor(
+    private route: ActivatedRoute, 
+    private datasetService: DatasetService,
+    private router: Router
+  ) {}
+
+  Highcharts: typeof Highcharts = Highcharts;
+  chartOptions: Highcharts.Options = {};
+  datasets: DataSets = {} as DataSets;
+
+
+  ngOnInit(): void {
+    const queryParams = this.route.snapshot.queryParams;
+    const state = history.state;
+    
+    this.selectedCentrale = queryParams['centrale'] || '';
+    this.tranche = queryParams['tranche'] || '';
+    this.dateLimit = queryParams['date'] || new Date().toISOString().split('T')[0];
+
+    // Si on a les données dans le state, on les utilise
+    if (state.centralesData) {
+      this.centralesData = state.centralesData;
+    } else {
+      // Sinon on va les chercher
+      this.chargerCentrales();
+    }
+
+    // Si on a une centrale sélectionnée, on charge ses tranches
+    if (this.selectedCentrale) {
+      this.chargerTranchesPourCentrale(this.selectedCentrale);
+    }
+    if (this.tranche) {
+      this.chargerDonneesTranche(this.tranche);
+    }
+  }
   chargerDonneesTranche(tranche: string): void {
     this.datasetService.getDatasetAllRecords(
-      { tranche: [tranche], heure_fuseau_horaire_europe_paris: ["12"] },
-      ['date_et_heure_fuseau_horaire_europe_paris', 'puissance_disponible','heure_fuseau_horaire_europe_paris'],'','date_et_heure_fuseau_horaire_europe_paris'
+      { 
+        tranche: [tranche], 
+        heure_fuseau_horaire_europe_paris: ["12"]
+      },
+      ['date_et_heure_fuseau_horaire_europe_paris', 'puissance_disponible', 'heure_fuseau_horaire_europe_paris'],
+      '',
+      'date_et_heure_fuseau_horaire_europe_paris'
     ).subscribe({
       next: (data) => {
-        this.datasets = data
+        this.datasets = data;
+        
+        if (this.dateLimit) {
+          const dateLimite = new Date(this.dateLimit);
+          this.datasets.results = this.datasets.results.filter(item => {
+            const itemDate = new Date(item.date_et_heure_fuseau_horaire_europe_paris);
+            return itemDate <= dateLimite;
+          });
+        }
+        
         this.afficherDonnees(this.datasets);
       },
       error: (error) => {
         console.error('Erreur lors de la récupération des données :', error);
       }
     });
+}
+  private chargerTranchesPourCentrale(centrale: string): void {
+    const hour = '12'; // On peut utiliser une heure fixe pour la recherche des tranches
+    const refinements = {
+      date_et_heure_fuseau_horaire_europe_paris: [this.dateLimit || new Date().toISOString().split('T')[0]],
+      heure_fuseau_horaire_europe_paris: [hour],
+    };
+    this.datasetService.getDatasetAllRecords(
+      refinements,
+      ['centrale', 'tranche', 'puissance_disponible'],
+      `centrale = '${centrale}'`,
+      "tranche ASC"
+    ).subscribe({
+      next: (data) => {
+        this.selectedCentraleData = {
+          centrale: centrale,
+          tranches: data.results
+        };
+      },
+      error: (error) => {
+        console.error('Erreur lors du chargement des tranches:', error);
+        this.selectedCentraleData = null;
+      }
+    });
   }
-/*   private chargerDonneesTranche(tranche: string): Promise<any> {
-    return firstValueFrom(
-      this.datasetService.getDatasetAllRecords(
-        { tranche: [tranche] },
-        ['date_et_heure_fuseau_horaire_europe_paris', 'tranche']
-      )
-    );
-  } */
-  afficherDonnees(data: DataSets): void{
+    // Le reste du code reste identique
+  private chargerCentrales(): void {
+    const hour = '12';
+    const refinements = {
+      date_et_heure_fuseau_horaire_europe_paris: [this.dateLimit],
+      heure_fuseau_horaire_europe_paris: [hour],
+    };
+
+    this.datasetService.getDatasetAllRecords(
+      refinements,
+      ['centrale', 'tranche'],
+      "tranche like '%1'", // Pour avoir une centrale par site
+      "centrale ASC"
+    ).subscribe({
+      next: (data) => {
+        this.centralesData = data.results;
+      },
+      error: (error) => {
+        console.error('Erreur lors du chargement des centrales:', error);
+      }
+    });
+  }
+  onCentraleChange(): void {
+    this.tranche = '';
+    if (this.selectedCentrale) {
+      // Charger les tranches de la centrale sélectionnée
+      this.chargerTranchesPourCentrale(this.selectedCentrale);
+    }
+    this.updateUrlParams();
+  }
+
+
+  onTrancheChange(): void {
+    if (this.tranche) {
+      this.chargerDonneesTranche(this.tranche);
+      this.updateUrlParams();
+    }
+  }
+
+  onDateChange(): void {
+    if (this.tranche) {
+      this.chargerDonneesTranche(this.tranche);
+      this.updateUrlParams();
+    }
+  }
+
+  private updateUrlParams(): void {
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: {
+        centrale: this.selectedCentrale,
+        tranche: this.tranche,
+        date: this.dateLimit
+      },
+      queryParamsHandling: 'merge'
+    });
+  }
+
+  afficherDonnees(data: DataSets): void {
     const dataStructure: [number, number][] = this.datasets.results.map((item) => {
       const baseDate = new Date(item.date_et_heure_fuseau_horaire_europe_paris);
-      
-      // Ajuster l'heure à partir de `heure_fuseau_horaire_europe_paris`
       baseDate.setUTCHours(item.heure_fuseau_horaire_europe_paris);
-  
       return [
-        baseDate.getTime(), // Timestamp ajusté
-        item.puissance_disponible, // Puissance disponible
+        baseDate.getTime(),
+        item.puissance_disponible,
       ];
     });
-    console.log(dataStructure)
-  // Configuration du graphique
+
     this.chartOptions = {
       chart: {
         zooming: {
           type: 'x',
         },
-        backgroundColor: '#FFFFFF', // Fond blanc pour respecter une charte visuelle épurée
+        backgroundColor: '#FFFFFF',
       },
       title: {
         text: 'Histogramme EDF',
         style: {
-          color: '#003366', // Bleu foncé pour le titre
+          color: '#003366',
           fontWeight: 'bold',
         },
       },
       subtitle: {
-        text:
-          document.ontouchstart === undefined
-            ? 'Cliquez et glissez pour zoomer'
-            : 'Pincez pour zoomer',
+        text: document.ontouchstart === undefined ? 'Cliquez et glissez pour zoomer' : 'Pincez pour zoomer',
         style: {
-          color: '#003366', // Bleu foncé
+          color: '#003366',
         },
       },
       xAxis: {
         type: 'datetime',
         labels: {
           style: {
-            color: '#003366', // Bleu foncé pour les labels de l'axe X
+            color: '#003366',
           },
         },
       },
@@ -85,12 +224,12 @@ export class HistogramComponent implements OnInit {
         title: {
           text: 'Puissance Disponible',
           style: {
-            color: '#003366', // Bleu foncé pour le titre de l'axe Y
+            color: '#003366',
           },
         },
         labels: {
           style: {
-            color: '#003366', // Bleu foncé pour les valeurs de l'axe Y
+            color: '#003366',
           },
         },
       },
@@ -101,12 +240,12 @@ export class HistogramComponent implements OnInit {
         area: {
           marker: {
             radius: 4,
-            fillColor: '#003366', // Bleu foncé pour les marqueurs
+            fillColor: '#003366',
             lineWidth: 2,
-            lineColor: '#003366', // Contour des marqueurs
+            lineColor: '#003366',
           },
           lineWidth: 2,
-          color: '#FF7300', // Orange vif pour la ligne
+          color: '#FF7300',
           fillColor: {
             linearGradient: {
               x1: 0,
@@ -115,8 +254,8 @@ export class HistogramComponent implements OnInit {
               y2: 1,
             },
             stops: [
-              [0, 'rgba(255, 115, 0, 0.5)'], // Orange vif en haut
-              [1, 'rgba(255, 115, 0, 0.1)'], // Orange clair en bas
+              [0, 'rgba(255, 115, 0, 0.5)'],
+              [1, 'rgba(255, 115, 0, 0.1)'],
             ],
           },
           threshold: null,
@@ -126,26 +265,12 @@ export class HistogramComponent implements OnInit {
         {
           type: 'area',
           name: 'Puissance Disponible',
-          data: dataStructure, // Données existantes
-          lineColor: '#003366', // Ligne bleu foncé
+          data: dataStructure,
+          lineColor: '#FF7300',
         },
       ],
     };
-  
-    Highcharts.chart('container', this.chartOptions); // Mettez à jour le graphique
-    console.log(data)
-  }
-  constructor(private route:ActivatedRoute, private datasetService: DatasetService){}
-  Highcharts: typeof Highcharts = Highcharts; // Référence à Highcharts
-  chartOptions: Highcharts.Options = {}; // Configuration du graphique
-  ngOnInit(): void {
-    // Récupérer le paramètre 'tranche' depuis la route si non passé en @Input()
-    if (!this.tranche) {
-      this.tranche = this.route.snapshot.queryParamMap.get('tranche') || '';
-    }
-    this.chargerDonneesTranche(this.tranche);
-    
 
-    // Charger les données à partir de l'API
- }
+    Highcharts.chart('container', this.chartOptions);
+  }
 }

@@ -1,6 +1,8 @@
 .nav-container {
   background: white;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  position: relative;
+  z-index: 1000;
 }
 
 .main-nav {
@@ -9,40 +11,14 @@
     align-items: center;
     padding: 12px 24px;
     background: linear-gradient(to right, #1348d0, #1e54d6);
-    gap: 24px;
+    justify-content: space-between;
 
     .logo {
       height: 40px;
-      transition: opacity 0.2s ease;
+      transition: transform 0.2s ease;
       
       &:hover {
-        opacity: 0.9;
-      }
-    }
-
-    .search-form {
-      flex: 1;
-      max-width: 600px;
-      margin: 0 auto;
-      
-      input {
-        width: 100%;
-        padding: 10px 16px;
-        border: none;
-        border-radius: 24px;
-        background: rgba(255, 255, 255, 0.95);
-        font-size: 0.95rem;
-        transition: all 0.2s ease;
-        
-        &:focus {
-          outline: none;
-          background: white;
-          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-        }
-        
-        &::placeholder {
-          color: #6b7280;
-        }
+        transform: scale(1.02);
       }
     }
   }
@@ -50,7 +26,7 @@
   .primary-nav {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 12px;
     padding: 8px 24px;
     background: white;
     border-bottom: 1px solid #f1f5f9;
@@ -59,120 +35,88 @@
       display: flex;
       align-items: center;
       gap: 8px;
-      padding: 8px 16px;
+      padding: 10px 16px;
       color: #4b5563;
       font-weight: 500;
       font-size: 0.95rem;
-      border-radius: 6px;
+      border-radius: 8px;
       transition: all 0.2s ease;
       text-decoration: none;
+      position: relative;
 
-      svg {
+      .nav-icon {
         width: 20px;
         height: 20px;
+        transition: transform 0.2s ease;
+      }
+
+      span {
+        transition: transform 0.2s ease;
       }
 
       &:hover {
         background: #f8fafc;
         color: #1348d0;
+
+        .nav-icon {
+          transform: scale(1.1);
+        }
+
+        span {
+          transform: translateX(2px);
+        }
       }
 
       &.active {
         background: #1348d0;
         color: white;
+        box-shadow: 0 2px 4px rgba(19, 72, 208, 0.2);
+
+        &:hover {
+          background: #1e54d6;
+        }
       }
     }
 
-    .dropdown {
-      position: relative;
-
-      .dropdown-toggle {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        padding: 8px 16px;
-        color: #4b5563;
-        font-weight: 500;
-        font-size: 0.95rem;
-        border-radius: 6px;
-        cursor: pointer;
-        transition: all 0.2s ease;
-
-        &:hover {
-          background: #f8fafc;
-        }
-
-        svg {
-          width: 16px;
-          height: 16px;
-          transition: transform 0.2s ease;
-        }
-
-        &.open svg {
-          transform: rotate(180deg);
-        }
-      }
-
-      .dropdown-menu {
-        position: absolute;
-        top: 100%;
-        left: 0;
-        min-width: 200px;
-        background: white;
-        border-radius: 8px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        padding: 8px;
-        margin-top: 4px;
-        display: none;
-        z-index: 100;
-
-        &.show {
-          display: block;
-        }
-
-        .dropdown-item {
-          display: block;
-          padding: 8px 16px;
-          color: #4b5563;
-          text-decoration: none;
-          border-radius: 4px;
-          transition: all 0.2s ease;
-
-          &:hover {
-            background: #f8fafc;
-            color: #1348d0;
-          }
-
-          &.active {
-            background: #eef2ff;
-            color: #1348d0;
-          }
-        }
-      }
+    .nav-group {
+      margin-left: auto;
+      display: flex;
+      gap: 8px;
     }
   }
 }
 
-/* Responsive */
 @media (max-width: 768px) {
   .main-nav {
     .header-top {
       padding: 8px 16px;
-      
-      .search-form {
-        max-width: none;
+      justify-content: center;
+
+      .logo {
+        height: 32px;
       }
     }
 
     .primary-nav {
       padding: 8px;
-      gap: 4px;
+      gap: 6px;
       overflow-x: auto;
+      justify-content: flex-start;
       
       .nav-link {
         padding: 8px 12px;
         font-size: 0.9rem;
         white-space: nowrap;
+
+        span {
+          display: none;
+        }
+
+        .nav-icon {
+          margin: 0;
+          width: 24px;
+          height: 24px;
+        }
       }
     }
   }
