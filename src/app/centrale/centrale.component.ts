@@ -43,8 +43,8 @@ goToHistogram(tranche: string): void {
   if (this.additionalData) {
     this.router.navigate(['/histogram'], {
       queryParams: { 
-        tranche: tranche,
         centrale: this.centrale.centrale,
+        tranche: tranche,
         date: this.selectedDate
       },
       state: { 

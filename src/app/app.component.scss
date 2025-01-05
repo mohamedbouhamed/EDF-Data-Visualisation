@@ -1,42 +1,46 @@
 .nav-container {
   background: white;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   position: relative;
   z-index: 1000;
 }
 
 .main-nav {
-  .header-top {
-    display: flex;
-    align-items: center;
-    padding: 12px 24px;
-    background: linear-gradient(to right, #1348d0, #1e54d6);
-    justify-content: space-between;
-
-    .logo {
-      height: 40px;
-      transition: transform 0.2s ease;
-      
-      &:hover {
-        transform: scale(1.02);
-      }
-    }
-  }
-
   .primary-nav {
     display: flex;
     align-items: center;
-    gap: 12px;
-    padding: 8px 24px;
+    padding: 12px 24px;
     background: white;
-    border-bottom: 1px solid #f1f5f9;
+    border-bottom: 1px solid rgba(18, 53, 109, 0.1); // Chathams Blue avec opacité
+
+    // Style du conteneur logo
+    .logo-container {
+      width: 160px;
+      
+      .logo {
+        height: 40px;
+        transition: transform 0.2s ease;
+        
+        &:hover {
+          transform: scale(1.02);
+        }
+      }
+    }
+
+    // Navigation centrale
+    .center-nav {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+    }
 
     .nav-link {
       display: flex;
       align-items: center;
       gap: 8px;
       padding: 10px 16px;
-      color: #4b5563;
+      color: #12356D; // Chathams Blue
       font-weight: 500;
       font-size: 0.95rem;
       border-radius: 8px;
@@ -48,6 +52,7 @@
         width: 20px;
         height: 20px;
         transition: transform 0.2s ease;
+        stroke: #12356D; // Chathams Blue pour l'icône
       }
 
       span {
@@ -55,11 +60,12 @@
       }
 
       &:hover {
-        background: #f8fafc;
-        color: #1348d0;
+        background: rgba(18, 53, 109, 0.05); // Chathams Blue avec opacité faible
+        color: #F1471C; // Pomegranate
 
         .nav-icon {
           transform: scale(1.1);
+          stroke: #F1471C; // Pomegranate pour l'icône au hover
         }
 
         span {
@@ -68,41 +74,49 @@
       }
 
       &.active {
-        background: #1348d0;
+        background: #12356D; // Chathams Blue
         color: white;
-        box-shadow: 0 2px 4px rgba(19, 72, 208, 0.2);
+        box-shadow: 0 2px 4px rgba(18, 53, 109, 0.2);
+
+        .nav-icon {
+          stroke: white;
+        }
 
         &:hover {
-          background: #1e54d6;
+          background: #F1471C; // Pomegranate au hover quand actif
         }
       }
     }
 
+    // Groupe navigation droite
     .nav-group {
-      margin-left: auto;
+      width: 160px;
       display: flex;
-      gap: 8px;
+      justify-content: flex-end;
     }
   }
 }
 
 @media (max-width: 768px) {
   .main-nav {
-    .header-top {
-      padding: 8px 16px;
-      justify-content: center;
-
-      .logo {
-        height: 32px;
-      }
-    }
-
     .primary-nav {
       padding: 8px;
-      gap: 6px;
-      overflow-x: auto;
-      justify-content: flex-start;
       
+      .logo-container {
+        width: auto;
+        
+        .logo {
+          height: 32px;
+        }
+      }
+
+      .center-nav {
+        justify-content: flex-start;
+        overflow-x: auto;
+        gap: 6px;
+        padding: 0 12px;
+      }
+
       .nav-link {
         padding: 8px 12px;
         font-size: 0.9rem;
