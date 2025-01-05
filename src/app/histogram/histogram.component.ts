@@ -74,33 +74,44 @@ export class HistogramComponent implements OnInit {
     }
   }
   chargerDonneesTranche(tranche: string): void {
-    this.isChartLoading = true; // Activer le loading
+    this.isChartLoading = true;
+
+    // Construction de la condition where avec plage de dates
+    let whereCondition = '';
+    if (this.dateLimit) {
+      const dateLimite = new Date(this.dateLimit);
+      dateLimite.setHours(23, 59, 59);
+
+      // Calculer la date 50 jours avant
+      const dateDebut = new Date(dateLimite);
+      dateDebut.setDate(dateDebut.getDate() - 50);
+      dateDebut.setHours(0, 0, 0);
+
+      // Calculer la date 50 jours après
+      const dateFin = new Date(dateLimite);
+      dateFin.setDate(dateFin.getDate() + 50);
+      dateFin.setHours(23, 59, 59);
+
+      whereCondition = `date_et_heure_fuseau_horaire_europe_paris>"${dateDebut.toISOString()}" AND date_et_heure_fuseau_horaire_europe_paris<"${dateFin.toISOString()}"`;
+    }
+
     this.datasetService.getDatasetAllRecords(
       { 
         tranche: [tranche], 
         heure_fuseau_horaire_europe_paris: ["12"]
       },
       ['date_et_heure_fuseau_horaire_europe_paris', 'puissance_disponible', 'heure_fuseau_horaire_europe_paris'],
-      '',
+      whereCondition,
       'date_et_heure_fuseau_horaire_europe_paris'
     ).subscribe({
       next: (data) => {
         this.datasets = data;
-        
-        if (this.dateLimit) {
-          const dateLimite = new Date(this.dateLimit);
-          this.datasets.results = this.datasets.results.filter(item => {
-            const itemDate = new Date(item.date_et_heure_fuseau_horaire_europe_paris);
-            return itemDate <= dateLimite;
-          });
-        }
-        
         this.afficherDonnees(this.datasets);
-        this.isChartLoading = false; // Désactiver le loading une fois les données affichées
+        this.isChartLoading = false;
       },
       error: (error) => {
         console.error('Erreur lors de la récupération des données :', error);
-        this.isChartLoading = false; // Désactiver le loading en cas d'erreur
+        this.isChartLoading = false;
       }
     });
 }

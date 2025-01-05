@@ -1,7 +1,6 @@
 <!-- histogram.component.html -->
 <div class="filters-container">
   <div class="row g-3">
-    <!-- Sélection de la centrale -->
     <div class="col-md-4">
       <label for="centrale-select" class="form-label">Centrale</label>
       <select class="form-select" 
@@ -15,7 +14,6 @@
       </select>
     </div>
 
-    <!-- Sélection de la tranche -->
     <div class="col-md-4">
       <label for="tranche-select" class="form-label">Tranche</label>
       <select class="form-select" 
@@ -30,7 +28,6 @@
       </select>
     </div>
 
-    <!-- Sélection de la date limite -->
     <div class="col-md-4">
       <label for="date-limit" class="form-label">Date limite</label>
       <input type="date" 
@@ -42,7 +39,8 @@
   </div>
 </div>
 
-<div class="chart-container mt-4">
+<!-- Conteneur de la courbe qui ne s'affiche que si une tranche est sélectionnée -->
+<div class="chart-container mt-4" *ngIf="tranche">
   <div *ngIf="isChartLoading" class="loading-overlay">
     <div class="loading-spinner">
       <div class="spinner"></div>
