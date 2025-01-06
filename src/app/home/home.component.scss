@@ -1,0 +1,44 @@
+.preview-box {
+    position: fixed; /* Keeps it fixed on the screen */
+    top: 200px; /* Adjust vertical positioning */
+    right: 200px; /* Adjust horizontal positioning */
+    width: 200px; /* Set the size of the box */
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    background-color: #f9f9f9;
+    text-align: center;
+  
+    .preview-text {
+      position: absolute;
+      top: 50%; /* Center text vertically */
+      left: 50%; /* Center text horizontally */
+      transform: translate(-50%, -50%);
+      z-index: 10;
+      font-size: 18px;
+      font-weight: bold;
+      color: #ffffff;
+      background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+      padding: 5px 10px;
+      border-radius: 4px;
+      pointer-events: none; /* Make sure the text does not interfere with the link */
+    }
+  
+    a {
+      display: block;
+      position: relative;
+    }
+  
+    img {
+      width: 100%;
+      height: auto;
+      display: block;
+      transition: transform 0.2s ease-in-out;
+    }
+  
+    a:hover img {
+      transform: scale(1.05); /* Slight zoom effect on hover */
+    }
+  }
+  
