@@ -1,8 +1,8 @@
 .preview-box {
     position: fixed; /* Keeps it fixed on the screen */
     top: 250px; /* Adjust vertical positioning */
-    right: 200px; /* Adjust horizontal positioning */
-    width: 200px; /* Set the size of the box */
+    left: 250px; /* Adjust horizontal positioning */
+    width: 214px; /* Set the size of the box */
     border: 1px solid #ccc;
     border-radius: 8px;
     overflow: hidden;
@@ -73,3 +73,66 @@
     max-height: 80px; /* Set the maximum height of the logos */
     margin: 0 10px; /* Add space between the logos */
   }
+
+  .editorial-box {
+    position: fixed;
+    top: 250px; /* Position à 250 pixels du haut */
+    right: 250px; /* Position à 250 pixels de la gauche de l'écran */
+    width: 600px; /* Ajustez la largeur */
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    padding: 15px;
+    overflow-y: auto; /* Permet le défilement si la liste est longue */
+    max-height: 220px; /* Assure une hauteur alignée avec la carte */
+  }  
+  .editorial-box a {
+    color: #000; /* Définit la couleur des liens en noir */
+    text-decoration: none; /* Supprime le soulignement par défaut */
+  }
+  
+  .editorial-box a:hover {
+    text-decoration: underline; /* Ajoute un soulignement au survol pour un effet interactif */
+  }
+  .article {
+    margin-bottom: 20px; /* Espace entre les articles */
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+  }
+  
+  .article:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+  }
+  
+  .article-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+  }
+  
+  .media-logo {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+  }
+  
+  .article-date {
+    font-size: 12px;
+    color: #666;
+  }
+  
+  .article-title {
+    font-size: 16px;
+    font-weight: bold;
+    margin: 0;
+    color: #333;
+    cursor: pointer;
+  }
+  
+  .article-title:hover {
+    text-decoration: underline;
+  }
+  
