@@ -1,61 +1,62 @@
 import { Component, HostListener } from '@angular/core';
-import { RouterOutlet,RouterLink, RouterLinkActive } from '@angular/router';
-import { CourseCardComponent } from './course-card/course-card.component';
-import { ICourse, courses } from './app.component.models';
-import { CommonModule, NgForOf } from '@angular/common';
-import { MapComponent } from './map/map.component';
-import { MyMapComponent } from './my-map/my-map.component';
+import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
+import { CommonModule } from '@angular/common';
 import { HighchartsChartModule } from 'highcharts-angular';
 import * as Highcharts from 'highcharts';
 import HC_map from 'highcharts/modules/map';
 import topology from '@highcharts/map-collection/custom/europe.topo.json';
-import { HistogramComponent } from './histogram/histogram.component';
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
+
 HC_map(Highcharts);
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet,CommonModule,RouterLink,RouterLinkActive,HighchartsChartModule],
+  imports: [
+    RouterOutlet,
+    CommonModule,
+    RouterLink,
+    RouterLinkActive,
+    HighchartsChartModule,
+    TranslateModule  // Assurez-vous que TranslateModule est importé
+  ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
+  currentLang: string = 'fr';
   Highcharts: typeof Highcharts = Highcharts;
   chartOptions: any;
-  topology: typeof topology=topology;
-  title = 'firstapp';
+  topology: typeof topology = topology;
   isDropdownOpen = false;
+
+  constructor(private translate: TranslateService) {
+    // Langues supportées
+    this.initializeTranslations();
+  }
+
+  private initializeTranslations() {
+    this.translate.addLangs(['fr', 'en']);
+    this.translate.setDefaultLang('fr');
+
+    // Récupère la langue du navigateur
+    const browserLang = this.translate.getBrowserLang();
+    this.translate.use(browserLang?.match(/fr|en/) ? browserLang : 'fr');
+    this.currentLang = this.translate.currentLang;
+  }
+
+  switchLanguage(lang: string) {
+    this.translate.use(lang);
+    this.currentLang = lang;
+  }
 
   toggleDropdown(event: Event) {
     event.stopPropagation();
     this.isDropdownOpen = !this.isDropdownOpen;
   }
 
-  // Ferme le dropdown quand on clique ailleurs sur la page
   @HostListener('document:click')
   closeDropdown() {
     this.isDropdownOpen = false;
-  }
-  amount = 50.05666;
-  total = 1;
-  price=860;
-  data = {
-    title:'Angular Core Course!',
-    lessonName:'21- Angular Built-in Pipes'
-  };
-  date = new Date();
-  onLogoClicked() {
-    alert("Hello World")
-    
-  }
-  onKeyUp (titre:string): void{
-    this.data.title = titre;
-  }
-  courses: ICourse[] = courses;
-  beginnerCourse = courses[0];
-  bCourse = courses[1];
-  aCourse = courses[2];
-  onCourseClicked(course:ICourse): void{
-    console.log('course clicked ',course.description);
   }
 }

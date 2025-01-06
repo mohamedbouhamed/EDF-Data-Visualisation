@@ -135,3 +135,35 @@
     }
   }
 }
+.language-selector {
+  display: flex;
+  gap: 4px;
+  padding: 4px;
+  background: rgba(18, 53, 109, 0.05);
+  border-radius: 6px;
+
+  .lang-btn {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+    background: none;
+    color: #12356D;
+    font-weight: 500;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+      color: #F1471C;
+    }
+
+    &.active {
+      background: #12356D;
+      color: white;
+
+      &:hover {
+        background: #F1471C;
+      }
+    }
+  }
+}
