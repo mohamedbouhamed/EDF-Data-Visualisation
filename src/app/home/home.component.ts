@@ -11,6 +11,10 @@ import { ActivatedRoute } from '@angular/router';
 export class HomeComponent {
   errorMessage: string | null = null;
 
+  goToEco2Mix(): void {
+    window.open('https://www.rte-france.com/eco2mix/la-production-delectricite-par-filiere', '_blank');
+  }
+
   constructor(private activatedRoute: ActivatedRoute) {}
 
   ngOnInit(): void {
