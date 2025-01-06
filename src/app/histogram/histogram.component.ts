@@ -6,11 +6,12 @@ import { DatasetService } from '../srvices/dataset.service';
 import { DataSets, Dispo } from '../app.component.models';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-histogram',
   standalone: true,
-  imports: [HighchartsChartModule, CommonModule, FormsModule],
+  imports: [HighchartsChartModule, CommonModule, FormsModule,TranslateModule],
   templateUrl: './histogram.component.html',
   styleUrl: './histogram.component.scss',
 })
@@ -41,8 +42,16 @@ export class HistogramComponent implements OnInit {
   constructor(
     private route: ActivatedRoute, 
     private datasetService: DatasetService,
-    private router: Router
-  ) {}
+    private router: Router,
+    private translate: TranslateService
+  ) {
+        // S'abonner aux changements de langue
+        this.translate.onLangChange.subscribe(() => {
+          if (this.datasets.results?.length > 0) {
+            this.afficherDonnees(this.datasets);
+          }
+        });
+  }
 
   Highcharts: typeof Highcharts = Highcharts;
   chartOptions: Highcharts.Options = {};
@@ -206,7 +215,15 @@ export class HistogramComponent implements OnInit {
         item.puissance_disponible,
       ];
     });
-
+  
+    // Fetch translations synchronously
+    const chartTitle = this.translate.instant('HISTOGRAM.CHART_TITLE');
+    const chartSubtitle = document.ontouchstart === undefined
+      ? this.translate.instant('HISTOGRAM.CHART_SUBTITLE')
+      : this.translate.instant('HISTOGRAM.CHART_SUBTITLE_TOUCH');
+    const yAxisTitle = this.translate.instant('HISTOGRAM.Y_AXIS_TITLE');
+  
+    // Define chart options with translations
     this.chartOptions = {
       chart: {
         zooming: {
@@ -215,14 +232,14 @@ export class HistogramComponent implements OnInit {
         backgroundColor: '#FFFFFF',
       },
       title: {
-        text: 'Histogramme EDF',
+        text: chartTitle,
         style: {
           color: '#003366',
           fontWeight: 'bold',
         },
       },
       subtitle: {
-        text: document.ontouchstart === undefined ? 'Cliquez et glissez pour zoomer' : 'Pincez pour zoomer',
+        text: chartSubtitle,
         style: {
           color: '#003366',
         },
@@ -237,7 +254,7 @@ export class HistogramComponent implements OnInit {
       },
       yAxis: {
         title: {
-          text: 'Puissance Disponible',
+          text: yAxisTitle,
           style: {
             color: '#003366',
           },
@@ -279,13 +296,16 @@ export class HistogramComponent implements OnInit {
       series: [
         {
           type: 'area',
-          name: 'Puissance Disponible',
+          name: yAxisTitle,
           data: dataStructure,
           lineColor: '#FF7300',
         },
       ],
     };
-
+  
+    // Initialize the chart
     Highcharts.chart('container', this.chartOptions);
   }
+  
+  
 }

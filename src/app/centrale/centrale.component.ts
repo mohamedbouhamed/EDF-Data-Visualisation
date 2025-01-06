@@ -3,12 +3,18 @@ import { Dispo } from '../app.component.models';
 import { CommonModule } from '@angular/common';
 import { DatasetService } from '../srvices/dataset.service';
 import { Router } from '@angular/router';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { registerLocaleData } from '@angular/common';
+import localeFr from '@angular/common/locales/fr';
+import localeEn from '@angular/common/locales/en';
 
+registerLocaleData(localeFr, 'fr');
+registerLocaleData(localeEn, 'en');
 
 @Component({
   selector: 'app-centrale',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule,TranslateModule],
   templateUrl: './centrale.component.html',
   styleUrl: './centrale.component.scss'
 })
@@ -22,7 +28,7 @@ export class CentraleComponent implements OnChanges {
   additionalData: Dispo[] | null = null;
   isVisible: boolean = false;
 
-  constructor(private datasetService: DatasetService, private router: Router) {}
+  constructor(private datasetService: DatasetService, private router: Router, public  translate: TranslateService) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['centrale'] && this.centrale) {

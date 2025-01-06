@@ -4,13 +4,14 @@ import * as L from 'leaflet';
 import { DatasetService } from '../srvices/dataset.service';
 import { DataSets, Dispo } from '../app.component.models';
 import { CentraleComponent } from '../centrale/centrale.component';
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.scss'],
   standalone: true,
-  imports: [CommonModule,CentraleComponent]
+  imports: [CommonModule,CentraleComponent,TranslateModule]
 })
 export class MapComponent implements OnInit {
   selectedHour: number = 0; // Heure sélectionnée

@@ -1,10 +1,12 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [],
+  imports: [CommonModule, RouterLink,TranslateModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
@@ -14,11 +16,5 @@ export class HomeComponent {
   constructor(private activatedRoute: ActivatedRoute) {}
 
   ngOnInit(): void {
-    this.activatedRoute.queryParams.subscribe(params => {
-      if (params['error'] === 'cours_introuvable') {
-        this.errorMessage = 'Cours introuvable !';
-      }
-    });
   }
 }
-

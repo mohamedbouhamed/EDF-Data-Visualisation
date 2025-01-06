@@ -1,0 +1,133 @@
+.home-container {
+    min-height: calc(100vh - 64px); // ajuster selon la hauteur de votre navbar
+    padding: 2rem;
+    background: #f8fafc;
+  }
+  
+  .cards-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    padding: 2rem;
+  }
+  
+  .card {
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border: 1px solid #e2e8f0;
+  
+    &:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 20px rgba(0, 0, 0, 0.1);
+  
+      .card-action {
+        color: #F1471C;
+        .arrow-icon {
+          transform: translateX(4px);
+        }
+      }
+  
+      .icon-wrapper {
+        background: #f8fafc;
+        &.map-icon {
+          color: #12356D;
+        }
+        &.data-icon {
+          color: #F1471C;
+        }
+      }
+    }
+  }
+  
+  .card-content {
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  
+  .icon-wrapper {
+    background: #f1f5f9;
+    width: 64px;
+    height: 64px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+  
+    .icon {
+      width: 32px;
+      height: 32px;
+      color: #64748b;
+    }
+  
+    &.map-icon {
+      background: #e8efff;
+      color: #12356D;
+    }
+  
+    &.data-icon {
+      background: #fff5f5;
+      color: #F1471C;
+    }
+  }
+  
+  h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #12356D;
+    margin: 0;
+  }
+  
+  p {
+    color: #64748b;
+    line-height: 1.6;
+    margin: 0;
+  }
+  
+  .card-action {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 500;
+    color: #64748b;
+    transition: all 0.3s ease;
+  
+    .arrow-icon {
+      width: 20px;
+      height: 20px;
+      transition: transform 0.3s ease;
+    }
+  }
+  
+  .error-banner {
+    background: #fee2e2;
+    color: #991b1b;
+    padding: 1rem;
+    text-align: center;
+    margin-bottom: 1rem;
+    border-radius: 8px;
+    font-weight: 500;
+  }
+  
+  @media (max-width: 768px) {
+    .home-container {
+      padding: 1rem;
+    }
+  
+    .cards-wrapper {
+      padding: 1rem;
+      gap: 1rem;
+    }
+  
+    .card-content {
+      padding: 1.5rem;
+    }
+  }

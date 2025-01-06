@@ -11,11 +11,16 @@ import { RegisterComponent } from './account/register/register.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { EdfComponent } from './edf/edf.component';
 import { HistogramComponent } from './histogram/histogram.component';
+import { InformationComponent } from './information/information.component';
 
 export const routes: Routes = [
   {
     path: 'course-card',
     component: CourseCardComponent,
+  },
+  {
+    path: 'information',
+    component: InformationComponent
   },
   {
   path: 'histogram',
