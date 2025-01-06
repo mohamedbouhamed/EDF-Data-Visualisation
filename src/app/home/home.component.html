@@ -52,12 +52,14 @@
   </div>
   
 
-  <div class="preview-box">
-    <span class="preview-text">CARTE</span>
-    <a href="/carte" target="_blank" rel="noopener noreferrer">
-      <img src="assets/images/preview-carte.jpg" alt="Website Preview" />
-    </a>
-  </div>
+  <div 
+  class="carte-box"
+  (click)="gotocarte()"
+  style = "background-image:url('assets/images/preview-carte.jpg');">
+  <h3 class="box-title">
+    CARTE
+  </h3>
+</div>
   
   <div 
   class="eco2mix-box" 
@@ -68,16 +70,18 @@
   </h3>
 </div>
 
-<div class="preview-graph">
-  <span class="preview-graph-text">HISTOGRAMMES D'ACTIVITÉ DES TRANCHES</span>
-  <a href="/histogram" target="_blank" rel="noopener noreferrer">
-    <img src="assets/images/graph2.png" alt="Website Preview" />
-  </a>
+<div 
+  class="graph-box"
+  (click)="gotograph()"
+  style = "background-image:url('assets/images/graph4.png');">
+  <h3 class="box-title">
+    HISTOGRAMMES D'ACTIVITÉ DES TRANCHES
+  </h3>
 </div>
  
   
 <footer class="credits-banner">
-  <p>Note : Les images utilisées sont la propriété de leurs auteurs respectifs.<br> Crédits : EDF, Rte, Freepik, OpenStreetMap</p>
+  <p>Note : Les images utilisées sont la propriété de leurs auteurs respectifs.<br> Crédits : EDF, Rte, Freepik, OpenStreetMap, CentraleSupélec</p>
 </footer>
 
   

@@ -14,7 +14,12 @@ export class HomeComponent {
   goToEco2Mix(): void {
     window.open('https://www.rte-france.com/eco2mix/la-production-delectricite-par-filiere', '_blank');
   }
-
+  gotocarte(): void {
+    window.open('/carte')
+  }
+  gotograph(): void {
+    window.open('/histogram')
+  }
   constructor(private activatedRoute: ActivatedRoute) {}
 
   ngOnInit(): void {
