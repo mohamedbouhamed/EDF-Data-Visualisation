@@ -15,7 +15,7 @@ export class MyMapComponent implements OnInit {
   plants = plants;
   centrales = centrale;
   centralesdecalees = centraleDecale;
-    constructor() {}
+  constructor() { }
 
   ngOnInit(): void {
     this.initMap();
@@ -25,7 +25,7 @@ export class MyMapComponent implements OnInit {
   private initMap(): void {
     this.map = L.map('map', {
       center: [46.6034, 1.8883], // Centre de la France
-      zoom: 5, // Zoom initial
+      zoom: 4, // Zoom initial
       minZoom: 3, // Limite de zoom minimum
       maxZoom: 15, // Limite de zoom maximum
       worldCopyJump: true // Permet le rebouclage horizontal
@@ -38,7 +38,7 @@ export class MyMapComponent implements OnInit {
 
     this.centrales.forEach(plant => {
       const color = this.getColorByPower(plant.puissance_disponible);
-    
+
       // Ajouter un CircleMarker pour chaque centrale
       L.circleMarker([plant.coordonnees.lat, plant.coordonnees.lon], {
         color: color,
@@ -52,23 +52,23 @@ export class MyMapComponent implements OnInit {
           Puissance installée : ${plant.puissance_installee} MW<br>
           Puissance disponible : ${plant.puissance_disponible}
           `);
-    }); 
-/*     this.centralesdecalees.forEach(plant => {
-      const color = this.getColorByPower(plant.puissance_disponible);
-    
-      // Ajouter un CircleMarker pour chaque centrale
-      L.circleMarker([plant.point_gps_modifie_pour_afficher_la_carte_opendata.lat, plant.point_gps_modifie_pour_afficher_la_carte_opendata.lon], {
-        color: color,
-        fillColor: color,
-        fillOpacity: 0.7,
-        radius: 10 // Taille uniforme
-      }).addTo(this.map)
-        .bindPopup(`
-          <b>${plant.centrale}</b><br>
-          Tranche : ${plant.tranche} <br>
-          Puissance disponible : ${plant.puissance_disponible}
-          `);
-    }); */
+    });
+    /*     this.centralesdecalees.forEach(plant => {
+          const color = this.getColorByPower(plant.puissance_disponible);
+        
+          // Ajouter un CircleMarker pour chaque centrale
+          L.circleMarker([plant.point_gps_modifie_pour_afficher_la_carte_opendata.lat, plant.point_gps_modifie_pour_afficher_la_carte_opendata.lon], {
+            color: color,
+            fillColor: color,
+            fillOpacity: 0.7,
+            radius: 10 // Taille uniforme
+          }).addTo(this.map)
+            .bindPopup(`
+              <b>${plant.centrale}</b><br>
+              Tranche : ${plant.tranche} <br>
+              Puissance disponible : ${plant.puissance_disponible}
+              `);
+        }); */
   }
   // Fonction pour déterminer la couleur en fonction de la puissance disponible
   private getColorByPower(power: number): string {
