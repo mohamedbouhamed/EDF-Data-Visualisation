@@ -143,22 +143,23 @@ input[type="date"].form-control {
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
   padding: 16px;
+  min-height: 400px;
 }
 
 #container {
-  position: relative;  // Important pour le positionnement absolu du loading
+  position: relative;
+  width: 100%;
+  height: 400px;
 }
 
 .loading-overlay {
   position: absolute;
-  inset: 0;          // Couvre tout le conteneur
+  inset: 0;
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(4px);
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000;    // S'assure qu'il est au-dessus du graphique
+  z-index: 1000;
   border-radius: 8px;
 }
-
-// ... reste des styles inchangés ...

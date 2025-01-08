@@ -96,19 +96,30 @@ export class MapComponent implements OnInit {
         // Ajouter les nouveaux marqueurs
         this.dataset.forEach((dispo) => {
           const { lat, lon } = dispo.point_gps_modifie_pour_afficher_la_carte_opendata;
-          const popupContent = `
-            <b>${dispo.centrale}</b> 
-          `;
+          const marker = L.marker([lat, lon], { icon: centraleIcon })
+            .addTo(this.map);
   
-          L.marker([lat, lon], { icon: centraleIcon })
-            .addTo(this.map)
-            .bindPopup(popupContent)
-            .on('click', () => {
-              this.selectCentrale(dispo);
-            });
+          // Créer un popup mais ne pas le lier directement au marker
+          const popup = L.popup({
+            closeButton: false,  // Enlever le bouton de fermeture
+            className: 'custom-popup'  // Pour du styling custom si besoin
+          }).setContent(`<b>${dispo.centrale}</b>`);
+  
+          // Gérer les événements hover
+          marker.on('mouseover',  (e) => {
+            popup.setLatLng(e.target.getLatLng()).openOn(this.map);
+          }, this);
+  
+          marker.on('mouseout',  () => {
+            this.map.closePopup(popup);
+          }, this);
+  
+          // Gérer le clic
+          marker.on('click', () => {
+            this.selectCentrale(dispo);
+          });
         });
   
-        // Mettre à jour l'histogramme si une centrale est sélectionnée
         if (this.selectedCentrale) {
           this.updateHistogram();
         }
