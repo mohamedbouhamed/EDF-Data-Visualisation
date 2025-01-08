@@ -58,7 +58,7 @@ export const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    redirectTo: '/course-list',
+    redirectTo: '/information',
   },
   {
     path: '**',

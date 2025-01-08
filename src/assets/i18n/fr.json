@@ -15,7 +15,7 @@
       "CENTRALE_PLACEHOLDER": "Sélectionner une centrale",
       "TRANCHE_LABEL": "Tranche",
       "TRANCHE_PLACEHOLDER": "Sélectionner une tranche",
-      "DATE_LIMIT_LABEL": "Date limite",
+      "DATE_CENTRAL_LABEL": "Date centrale",
       "LOADING_MESSAGE": "Chargement des données...",
       "CHART_TITLE": "Histogramme EDF",
       "CHART_SUBTITLE": "Cliquez et glissez pour zoomer",

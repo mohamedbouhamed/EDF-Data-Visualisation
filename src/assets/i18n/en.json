@@ -15,7 +15,7 @@
       "CENTRALE_PLACEHOLDER": "Select a power plant",
       "TRANCHE_LABEL": "Unit",
       "TRANCHE_PLACEHOLDER": "Select a unit",
-      "DATE_LIMIT_LABEL": "Limit Date",
+      "DATE_CENTRAL_LABEL": "Central Date",
       "LOADING_MESSAGE": "Loading data...",
       "CHART_TITLE": "EDF Histogram",
       "CHART_SUBTITLE": "Click and drag to zoom",
