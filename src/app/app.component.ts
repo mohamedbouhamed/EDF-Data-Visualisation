@@ -6,6 +6,7 @@ import * as Highcharts from 'highcharts';
 import HC_map from 'highcharts/modules/map';
 import topology from '@highcharts/map-collection/custom/europe.topo.json';
 import { TranslateService, TranslateModule } from '@ngx-translate/core';
+import { Title } from '@angular/platform-browser';
 
 HC_map(Highcharts);
 
@@ -30,7 +31,7 @@ export class AppComponent {
   topology: typeof topology = topology;
   isDropdownOpen = false;
 
-  constructor(private translate: TranslateService) {
+  constructor(private translate: TranslateService, private titleService: Title) {
     // Langues supportées
     this.initializeTranslations();
   }
@@ -58,5 +59,21 @@ export class AppComponent {
   @HostListener('document:click')
   closeDropdown() {
     this.isDropdownOpen = false;
+  }
+
+  ngOnInit() {
+    // Mettre à jour le titre quand la langue change
+    this.translate.onLangChange.subscribe(() => {
+      this.updateTitle();
+    });
+
+    // Mettre à jour le titre initialement
+    this.updateTitle();
+  }
+
+  private updateTitle() {
+    this.translate.get('TITLE').subscribe((res: string) => {
+      this.titleService.setTitle(res);
+    });
   }
 }
