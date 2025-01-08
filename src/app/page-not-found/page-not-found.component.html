@@ -1,1 +1,32 @@
-<div class="image"><img src="404.png" alt="" /></div>
+<div class="not-found-container">
+    <div class="content">
+      <div class="error-code">404</div>
+      <h1>{{ 'ERROR.PAGE_NOT_FOUND' | translate }}</h1>
+      <p>{{ 'ERROR.PAGE_NOT_FOUND_DESC' | translate }}</p>
+      <button class="home-button" (click)="goHome()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
+          <polyline points="9 22 9 12 15 12 15 22"/>
+        </svg>
+        {{ 'ERROR.BACK_HOME' | translate }}
+      </button>
+    </div>
+    
+    <!-- SVG Animation -->
+    <div class="illustration">
+      <svg viewBox="0 0 500 500" class="error-svg">
+        <path class="cloud" d="M90,300 C50,300 50,250 90,250 C70,200 120,200 140,230 C160,180 240,180 260,230 C280,200 340,200 360,250 C400,250 400,300 360,300 Z" />
+        <path class="plant-left" d="M150,500 C150,430 120,430 120,500" />
+        <path class="plant-right" d="M340,500 C340,430 370,430 370,500" />
+        <circle class="sun" cx="400" cy="150" r="30" />
+        <g class="building">
+          <rect x="200" y="300" width="100" height="200" />
+          <rect x="220" y="320" width="20" height="20" class="window" />
+          <rect x="260" y="320" width="20" height="20" class="window" />
+          <rect x="220" y="360" width="20" height="20" class="window" />
+          <rect x="260" y="360" width="20" height="20" class="window" />
+          <rect x="240" y="460" width="20" height="40" class="door" />
+        </g>
+      </svg>
+    </div>
+  </div>
