@@ -72,8 +72,7 @@ goToHistogram(tranche: string): void {
       "tranche ASC"
     ).subscribe({
       next: (data) => {
-        this.additionalData = data.results;
-        console.log('Données récupérées pour l\'histogramme :', this.additionalData);
+        this.additionalData = data.results; 
       },
       error: (error) => {
         console.error('Erreur lors de la récupération des données :', error);

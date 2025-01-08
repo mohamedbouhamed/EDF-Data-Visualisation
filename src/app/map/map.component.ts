@@ -71,7 +71,7 @@ export class MapComponent implements OnInit {
     
     // Définition de l'icône
     const centraleIcon = L.icon({
-      iconUrl: 'centraleNuc.png',
+      iconUrl: 'centraleNuc1.png',
       iconSize: [45, 45],
       iconAnchor: [20, 0],
       popupAnchor: [0, 0],
@@ -86,7 +86,7 @@ export class MapComponent implements OnInit {
   
     this.datasetService.getDatasetAllRecords(
       this.getRefinementsForNow(),
-      ['centrale', 'tranche', 'point_gps_modifie_pour_afficher_la_carte_opendata', 'puissance_disponible'],
+      ['centrale', 'point_gps_modifie_pour_afficher_la_carte_opendata'],
       "tranche like '%1'"
     ).subscribe({
       next: (data: DataSets) => {
@@ -97,8 +97,7 @@ export class MapComponent implements OnInit {
         this.dataset.forEach((dispo) => {
           const { lat, lon } = dispo.point_gps_modifie_pour_afficher_la_carte_opendata;
           const popupContent = `
-            <b>${dispo.centrale}</b> - ${dispo.tranche}<br>
-            Puissance disponible : ${dispo.puissance_disponible} MW
+            <b>${dispo.centrale}</b> 
           `;
   
           L.marker([lat, lon], { icon: centraleIcon })

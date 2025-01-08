@@ -84,7 +84,6 @@ export class HistogramComponent implements OnInit {
   }
   chargerDonneesTranche(tranche: string): void {
     this.isChartLoading = true;
-
     // Construction de la condition where avec plage de dates
     let whereCondition = '';
     if (this.dateLimit) {
@@ -126,6 +125,7 @@ export class HistogramComponent implements OnInit {
 }
   private chargerTranchesPourCentrale(centrale: string): void {
     const hour = '12'; // On peut utiliser une heure fixe pour la recherche des tranches
+    this.isChartLoading = true;
     const refinements = {
       date_et_heure_fuseau_horaire_europe_paris: [this.dateLimit || new Date().toISOString().split('T')[0]],
       heure_fuseau_horaire_europe_paris: [hour],
@@ -182,6 +182,7 @@ export class HistogramComponent implements OnInit {
 
   onTrancheChange(): void {
     if (this.tranche) {
+      this.chartOptions = {}; // Réinitialise le graphique
       this.chargerDonneesTranche(this.tranche);
       this.updateUrlParams();
     }
@@ -189,6 +190,7 @@ export class HistogramComponent implements OnInit {
 
   onDateChange(): void {
     if (this.tranche) {
+      this.chartOptions = {}; // Réinitialise le graphique
       this.chargerDonneesTranche(this.tranche);
       this.updateUrlParams();
     }
