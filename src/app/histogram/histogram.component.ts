@@ -303,6 +303,13 @@ export class HistogramComponent implements OnInit {
           lineColor: '#FF7300',
         },
       ],
+      tooltip: {
+        xDateFormat: '%e %B %Y %H:%M', // Format de date pour le tooltip
+        shared: true,
+        useHTML: true,
+        headerFormat: '<small>{point.key}</small><br/>',
+        pointFormat: '<span style="color:{point.color}">\u25CF</span> {series.name}: <b>{point.y} MW</b><br/>'
+      },
     };
   
     // Initialize the chart

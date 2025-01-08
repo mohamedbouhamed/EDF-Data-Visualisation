@@ -4,11 +4,16 @@
   position: relative;
   z-index: 1000;
 }
+// Par défaut, on cache la navbar mobile
+.mobile-nav {
+  display: none;
+}
 
 .main-nav {
   .primary-nav {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     padding: 12px 24px;
     background: white;
     border-bottom: 1px solid rgba(18, 53, 109, 0.1); // Chathams Blue avec opacité
@@ -98,23 +103,51 @@
 }
 
 @media (max-width: 768px) {
+  .desktop-nav {
+    display: none; // Cache la navbar desktop
+  }
+  
+  .mobile-nav {
+    display: block; // Affiche la navbar mobile
+  }
   .main-nav {
     .primary-nav {
-      padding: 8px;
-      
+      flex-direction: column;
+      align-items: stretch;
+      gap: 16px;
+      padding: 12px;
+
       .logo-container {
-        width: auto;
+        width: 100%;
+        display: flex;
+        justify-content: center;
         
         .logo {
           height: 32px;
         }
       }
 
+      .nav-bottom-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        gap: 12px;
+      }
+
       .center-nav {
-        justify-content: flex-start;
+        justify-content: center;
+        gap: 8px;
+        padding: 0;
+        flex: 1;
         overflow-x: auto;
-        gap: 6px;
-        padding: 0 12px;
+
+        // Cache la barre de défilement
+        &::-webkit-scrollbar {
+          display: none;
+        }
+        -ms-overflow-style: none;
+        scrollbar-width: none;
       }
 
       .nav-link {
@@ -130,6 +163,19 @@
           margin: 0;
           width: 24px;
           height: 24px;
+        }
+      }
+
+      .nav-group {
+        width: auto;
+        
+        .language-selector {
+          padding: 2px;
+          
+          .lang-btn {
+            padding: 4px 8px;
+            font-size: 0.85rem;
+          }
         }
       }
     }
