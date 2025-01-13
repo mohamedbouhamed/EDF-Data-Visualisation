@@ -17,7 +17,9 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 })
 export class HistogramComponent implements OnInit {
   @Input() tranche!: string;
-  
+  isLoading: boolean = false;
+  minDate: string = '';
+  maxDate: string = '';
   isChartLoading: boolean = false;
   selectedCentrale: string = '';
   dateLimit: string = '';
@@ -62,6 +64,7 @@ export class HistogramComponent implements OnInit {
     const queryParams = this.route.snapshot.queryParams;
     const state = history.state;
     
+    this.loadDateLimits();
     this.selectedCentrale = queryParams['centrale'] || '';
     this.tranche = queryParams['tranche'] || '';
     this.dateLimit = queryParams['date'] || new Date().toISOString().split('T')[0];
@@ -82,6 +85,48 @@ export class HistogramComponent implements OnInit {
       this.chargerDonneesTranche(this.tranche);
     }
   }
+  private loadDateLimits(): void {
+    this.isLoading = true;
+    this.datasetService.getDateLimits().subscribe({
+      next: (data) => {
+        // On récupère les dates absolues de l'API
+        const absoluteMinDate = new Date(data.results[0]['min(date_et_heure_fuseau_horaire_europe_paris)']);
+        const absoluteMaxDate = new Date(data.results[0]['max(date_et_heure_fuseau_horaire_europe_paris)']);
+  
+        // On ajoute 50 jours à la date min et on retire 50 jours à la date max
+        // pour avoir des dates sélectionnables qui permettront d'afficher les données
+        const adjustedMinDate = new Date(absoluteMinDate);
+        adjustedMinDate.setDate(adjustedMinDate.getDate() + 50);
+        
+        const adjustedMaxDate = new Date(absoluteMaxDate);
+        adjustedMaxDate.setDate(adjustedMaxDate.getDate() - 50);
+  
+        // On convertit en format YYYY-MM-DD
+        this.minDate = adjustedMinDate.toISOString().split('T')[0];
+        this.maxDate = adjustedMaxDate.toISOString().split('T')[0];
+        
+        // Vérifier si la date actuelle est dans les limites
+        const currentDate = new Date(this.dateLimit);
+        const minDateTime = new Date(this.minDate);
+        const maxDateTime = new Date(this.maxDate);
+        
+        if (currentDate < minDateTime || currentDate > maxDateTime) {
+          this.dateLimit = new Date().toISOString().split('T')[0];
+        }
+        
+        this.isLoading = false;
+        
+        if (this.tranche) {
+          this.chargerDonneesTranche(this.tranche);
+        }
+      },
+      error: (error) => {
+        console.error('Erreur lors du chargement des dates limites:', error);
+        this.isLoading = false;
+      }
+    });
+  }
+
   chargerDonneesTranche(tranche: string): void {
     this.isChartLoading = true;
     // Construction de la condition where avec plage de dates

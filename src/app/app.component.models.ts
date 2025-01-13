@@ -1,3 +1,10 @@
+export interface DateLimits {
+  total_count: number;
+  results: {
+    'min(date_et_heure_fuseau_horaire_europe_paris)': string;
+    'max(date_et_heure_fuseau_horaire_europe_paris)': string;
+  }[];
+}
 export interface DataSetsTranche {
   total_count: number;
   results: DonneeTranche;

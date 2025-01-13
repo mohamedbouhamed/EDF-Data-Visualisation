@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import{ HttpClient, HttpErrorResponse, HttpParams} from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { DataSets } from '../app.component.models';
+import { DataSets, DateLimits } from '../app.component.models';
 
 const baseUrl = 'https://opendata.edf.fr/api/explore/v2.1/catalog/datasets/disponibilite-du-parc-nucleaire-d-edf-sa-present-passe-et-previsionnel'
 @Injectable({
@@ -60,4 +60,19 @@ getDatasetAllRecords( refinements: Record<string, string[]>={}, select: string[]
   getDatasetReocrd(dataset_id: string, record_id: string): Observable <any>{
     return this.http.get(`${baseUrl}/datasets/${dataset_id}/records/${record_id}`)
   }
+  private baseUrl = 'https://opendata.edf.fr/api/explore/v2.1/catalog/datasets';
+  private datasetId = 'disponibilite-du-parc-nucleaire-d-edf-sa-present-passe-et-previsionnel';
+
+  // ... autres méthodes existantes ...
+
+  getDateLimits(): Observable<DateLimits> {
+    const url = `${this.baseUrl}/${this.datasetId}/records`;
+    const params = {
+      select: 'min(date_et_heure_fuseau_horaire_europe_paris),max(date_et_heure_fuseau_horaire_europe_paris)',
+      limit: '1'
+    };
+
+    return this.http.get<DateLimits>(url, { params });
+  }
 }
+

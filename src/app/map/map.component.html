@@ -18,6 +18,8 @@
             class="styled-date"
             [value]="selectedDate"
             (change)="onDateChange($event)"
+            [min]="minDate"
+            [max]="maxDate"
           />
         </div>
 

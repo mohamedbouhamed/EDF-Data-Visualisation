@@ -39,7 +39,9 @@
              class="form-control" 
              id="date-limit"
              [(ngModel)]="dateLimit"
-             (ngModelChange)="onDateChange()">
+             (ngModelChange)="onDateChange()"
+             [min]="minDate"
+             [max]="maxDate">
     </div>
   </div>
 </div>

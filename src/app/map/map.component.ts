@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import * as L from 'leaflet';
 import { DatasetService } from '../srvices/dataset.service';
-import { DataSets, Dispo } from '../app.component.models';
+import { DataSets, DateLimits, Dispo } from '../app.component.models';
 import { CentraleComponent } from '../centrale/centrale.component';
 import { TranslateService, TranslateModule } from '@ngx-translate/core';
 
@@ -22,6 +22,9 @@ export class MapComponent implements OnInit {
   selectedCentrale: Dispo | null = null; // Centrale sélectionnée
   isCompactView: boolean = false; // Vue compacte activée
   isLoading: boolean = false;
+  dateLimits: DateLimits | null = null;
+  minDate: string = '';
+  maxDate: string = '';
 
   constructor(private datasetService: DatasetService) {}
 
@@ -30,8 +33,35 @@ export class MapComponent implements OnInit {
     this.setCurrentDate();
     this.setCurrentHour();
     this.loadCentralesOnMap();
+    this.loadDateLimits();
   }
-
+  private loadDateLimits(): void {
+    this.isLoading = true;
+    this.datasetService.getDateLimits().subscribe({
+      next: (data) => {
+        // Conversion des dates en format YYYY-MM-DD pour l'input date
+        this.minDate = new Date(data.results[0]['min(date_et_heure_fuseau_horaire_europe_paris)']).toISOString().split('T')[0];
+        this.maxDate = new Date(data.results[0]['max(date_et_heure_fuseau_horaire_europe_paris)']).toISOString().split('T')[0];
+        
+        // Vérifier si la date actuelle est dans les limites
+        const currentDate = new Date(this.selectedDate);
+        const minDateTime = new Date(this.minDate);
+        const maxDateTime = new Date(this.maxDate);
+        
+        if (currentDate < minDateTime || currentDate > maxDateTime) {
+          this.selectedDate = new Date().toISOString().split('T')[0];
+        }
+        
+        this.isLoading = false;
+        // Charger les données initiales après avoir défini les limites
+        this.loadCentralesOnMap();  // Votre méthode de chargement de données existante
+      },
+      error: (error) => {
+        console.error('Erreur lors du chargement des dates limites:', error);
+        this.isLoading = false;
+      }
+    });
+  }
   private setCurrentDate(): void {
     const today = new Date();
     this.selectedDate = today.toISOString().split('T')[0]; // Format "YYYY-MM-DD"
