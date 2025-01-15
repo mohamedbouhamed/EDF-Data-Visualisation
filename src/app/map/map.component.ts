@@ -5,6 +5,7 @@ import { DatasetService } from '../srvices/dataset.service';
 import { DataSets, DateLimits, Dispo } from '../app.component.models';
 import { CentraleComponent } from '../centrale/centrale.component';
 import { TranslateService, TranslateModule } from '@ngx-translate/core';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-map',
@@ -26,7 +27,7 @@ export class MapComponent implements OnInit {
   minDate: string = '';
   maxDate: string = '';
 
-  constructor(private datasetService: DatasetService) {}
+  constructor(private datasetService: DatasetService, private router: Router, private activatedRoute: ActivatedRoute) {}
 
   ngOnInit(): void {
     this.initMap();
@@ -152,6 +153,8 @@ export class MapComponent implements OnInit {
   
         if (this.selectedCentrale) {
           this.updateHistogram();
+          console.log(this.selectedCentrale);
+          
         }
       },
       error: (err) => {
@@ -194,15 +197,40 @@ export class MapComponent implements OnInit {
 
   private selectCentrale(centrale: Dispo): void {
     this.selectedCentrale = centrale;
-    this.isCompactView = true; // Réduire la largeur de la carte
+    this.isCompactView = true;
     const { lat, lon } = centrale.point_gps_modifie_pour_afficher_la_carte_opendata;
-
+  
+    // Redirection avec tous les paramètres nécessaires
+    this.router.navigate([], {
+      relativeTo: this.activatedRoute,
+      queryParams: { 
+        centrale: centrale.centrale,
+        date: this.selectedDate,
+        hour: this.selectedHour.toString()
+      },
+      queryParamsHandling: 'merge'
+    });
+  
     setTimeout(() => {
-      this.map.invalidateSize(); // Recalcule la taille de la carte
-      this.map.flyTo([lat, lon], 8, { animate: true }); // Recentre sur la centrale sélectionnée
+      this.map.invalidateSize();
+      this.map.flyTo([lat, lon], 8, { animate: true });
     });
   }
   private refreshData(): void {
+    // Sauvegarder la centrale actuellement sélectionnée
+    const currentCentrale = this.selectedCentrale;
+  
+    // Mettre à jour les paramètres d'URL
+    this.router.navigate([], {
+      relativeTo: this.activatedRoute,
+      queryParams: { 
+        ...(currentCentrale && { centrale: currentCentrale.centrale }),
+        date: this.selectedDate,
+        hour: this.selectedHour.toString()
+      },
+      queryParamsHandling: 'merge'
+    });
+  
     this.isLoading = true;
     this.loadCentralesOnMap();
   }
