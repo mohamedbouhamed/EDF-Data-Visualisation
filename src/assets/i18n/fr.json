@@ -18,7 +18,7 @@
       "TRANCHE_PLACEHOLDER": "Sélectionner une tranche",
       "DATE_CENTRAL_LABEL": "Date centrale",
       "LOADING_MESSAGE": "Chargement des données...",
-      "CHART_TITLE": "Histogramme EDF",
+      "CHART_TITLE": "Evolution temporelle de la disponibilité de la tranche",
       "CHART_SUBTITLE": "Cliquez et glissez pour zoomer",
       "CHART_SUBTITLE_TOUCH": "Pincez pour zoomer",
       "Y_AXIS_TITLE": "Puissance Disponible (MW)"

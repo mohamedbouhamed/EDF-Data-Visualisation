@@ -18,7 +18,7 @@
       "TRANCHE_PLACEHOLDER": "Select a unit",
       "DATE_CENTRAL_LABEL": "Central Date",
       "LOADING_MESSAGE": "Loading data...",
-      "CHART_TITLE": "EDF Histogram",
+      "CHART_TITLE": "Temporal evolution of the unit's availability",
       "CHART_SUBTITLE": "Click and drag to zoom",
       "CHART_SUBTITLE_TOUCH": "Pinch to zoom",
       "Y_AXIS_TITLE": "Available Power (MW)"
