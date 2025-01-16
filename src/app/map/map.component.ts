@@ -145,7 +145,6 @@ export class MapComponent implements OnInit {
             this.map.closePopup(popup);
           }, this);
   
-          // Gérer le clic
           marker.on('click', () => {
             this.selectCentrale(dispo);
           });
@@ -153,8 +152,6 @@ export class MapComponent implements OnInit {
   
         if (this.selectedCentrale) {
           this.updateHistogram();
-          console.log(this.selectedCentrale);
-          
         }
       },
       error: (err) => {
@@ -166,13 +163,12 @@ export class MapComponent implements OnInit {
       }
     });
   }
-  
-  
-
-
   private updateHistogram(): void {
-    const centraleId = this.selectedCentrale?.tranche; // Identifiant unique (tranche ici)
-    this.selectedCentrale = this.dataset.find((dispo) => dispo.tranche === centraleId) || null;
+    // Au lieu de chercher par tranche, chercher par nom de centrale
+    if (this.selectedCentrale) {
+      const centraleName = this.selectedCentrale.centrale;
+      this.selectedCentrale = this.dataset.find((dispo) => dispo.centrale === centraleName) || null;
+    }
   }
 
   private initMap(): void {
@@ -217,14 +213,12 @@ export class MapComponent implements OnInit {
     });
   }
   private refreshData(): void {
-    // Sauvegarder la centrale actuellement sélectionnée
-    const currentCentrale = this.selectedCentrale;
+    const currentCentraleName = this.selectedCentrale?.centrale;
   
-    // Mettre à jour les paramètres d'URL
     this.router.navigate([], {
       relativeTo: this.activatedRoute,
       queryParams: { 
-        ...(currentCentrale && { centrale: currentCentrale.centrale }),
+        ...(currentCentraleName && { centrale: currentCentraleName }),
         date: this.selectedDate,
         hour: this.selectedHour.toString()
       },
