@@ -1,31 +1,32 @@
-<<<<<<< HEAD
-# Firstapp
+# Visualisation des disponibilités des centrales nucléaires EDF
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.1.
+## Description  
+Ce projet est un site web interactif de visualisation dynamique des disponibilités actuelles et futures des centrales nucléaires EDF. Il permet de suivre en temps réel les capacités de production et les maintenances prévues via une interface ergonomique.
 
-## Development server
+Le projet a été développé en **Angular**, avec l’utilisation de la bibliothèque **ngx-charts** pour les graphiques.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+---
 
-## Code scaffolding
+## Démo en ligne  
+Vous pouvez voir le site directement ici :  
+[https://angular-cyan-psi.vercel.app/](https://angular-cyan-psi.vercel.app/)  
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+---
 
-## Build
+## Installation et lancement local
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+1. Cloner ce dépôt :  
+```bash
+git clone https://github.com/ton-utilisateur/ton-repo.git
+cd ton-repo
+```
+2. Installer les dépendances :
 
-## Running unit tests
+```bash
+npm install
+```
+3. Lancer le serveur de déploiment :
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
-=======
-# Angular
->>>>>>> e178f0ea5ba6b1a7a59726025a30b563b518d75c
+```bash
+ng serve -o
+```
