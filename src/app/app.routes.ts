@@ -47,7 +47,7 @@ export const routes: Routes = [
     component: AccountComponent,
     children: [
       { path: 'login', component: LoginComponent },
-      { path: 'regitser', component: RegisterComponent },
+      { path: 'register', component: RegisterComponent },
       { path: '', redirectTo: '/account/login', pathMatch: 'full' },
     ],
   },
