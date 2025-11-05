@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { Dispo } from '../app.component.models';
 import { CommonModule } from '@angular/common';
-import { DatasetService } from '../srvices/dataset.service';
+import { DatasetService } from '../services/dataset.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { registerLocaleData } from '@angular/common';

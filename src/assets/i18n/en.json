@@ -2,6 +2,7 @@
   "TITLE":"Availability of EDF SA's nuclear fleet (Present, past and forecast)",
     "NAV": {
       "HOME": "Home",
+      "STATS": "Statistics",
       "MAP": "Map",
       "DATA": "Data"
     },
@@ -56,6 +57,11 @@
         "REACTORS": "Reactors in Operation"
       },
       "CARDS": {
+        "STATS": {
+          "TITLE": "Real-Time Statistics",
+          "DESCRIPTION": "View key indicators of the EDF nuclear fleet in real time",
+          "ACTION": "View statistics"
+        },
         "MAP": {
           "TITLE": "Interactive Map",
           "DESCRIPTION": "Visualize the location and availability of EDF nuclear power plants in France",
@@ -67,6 +73,9 @@
           "ACTION": "View data"
         }
       }
+    },
+    "STATS": {
+      "TITLE": "Real-Time Statistics"
     },
     "CENTRALE": {
       "CLOSE": "Close",

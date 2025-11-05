@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import * as L from 'leaflet';
-import { DatasetService } from '../srvices/dataset.service';
+import { DatasetService } from '../services/dataset.service';
 import { DataSets, DateLimits, Dispo } from '../app.component.models';
 import { CentraleComponent } from '../centrale/centrale.component';
 import { TranslateService, TranslateModule } from '@ngx-translate/core';

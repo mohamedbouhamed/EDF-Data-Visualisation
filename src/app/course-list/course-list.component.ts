@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import { CourseCardComponent } from '../course-card/course-card.component';
 import { DataSetResult, DataSets, Dispo, ICourse, courses } from '../app.component.models';
 import { CommonModule } from '@angular/common';
-import { CatalogService} from '../srvices/catalog.service';
-import { DatasetService } from '../srvices/dataset.service';
+import { CatalogService} from '../services/catalog.service';
+import { DatasetService } from '../services/dataset.service';
 
 @Component({
   selector: 'app-course-list',

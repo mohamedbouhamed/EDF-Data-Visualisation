@@ -12,6 +12,7 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 import { EdfComponent } from './edf/edf.component';
 import { HistogramComponent } from './histogram/histogram.component';
 import { InformationComponent } from './information/information.component';
+import { StatisticsComponent } from './statistics/statistics.component';
 
 export const routes: Routes = [
   {
@@ -21,6 +22,10 @@ export const routes: Routes = [
   {
     path: 'information',
     component: InformationComponent
+  },
+  {
+    path: 'statistics',
+    component: StatisticsComponent
   },
   {
   path: 'histogram',

@@ -2,6 +2,7 @@
   "TITLE":"Disponibilité du parc nucléaire d'EDF SA (Présent, passé et prévisionnel)",
     "NAV": {
       "HOME": "Accueil",
+      "STATS": "Statistiques",
       "MAP": "Carte",
       "DATA": "Données"
     },
@@ -56,6 +57,11 @@
         "REACTORS": "Réacteurs en Service"
       },
       "CARDS": {
+        "STATS": {
+          "TITLE": "Statistiques en Temps Réel",
+          "DESCRIPTION": "Consultez les indicateurs clés du parc nucléaire EDF en temps réel",
+          "ACTION": "Voir les statistiques"
+        },
         "MAP": {
           "TITLE": "Carte Interactive",
           "DESCRIPTION": "Visualisez la localisation et la disponibilité des centrales nucléaires EDF en France",
@@ -67,6 +73,9 @@
           "ACTION": "Voir les données"
         }
       }
+    },
+    "STATS": {
+      "TITLE": "Statistiques en Temps Réel"
     },
     "CENTRALE": {
       "CLOSE": "Fermer",

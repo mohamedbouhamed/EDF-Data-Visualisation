@@ -2,7 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as Highcharts from 'highcharts';
 import { HighchartsChartModule } from 'highcharts-angular';
-import { DatasetService } from '../srvices/dataset.service';
+import { DatasetService } from '../services/dataset.service';
 import { DataSets, Dispo } from '../app.component.models';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';

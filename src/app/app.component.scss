@@ -199,17 +199,66 @@
   align-items: center;
   justify-content: center;
   transition: all 0.2s ease;
+  position: relative;
 
   svg {
     width: 20px;
     height: 20px;
     stroke-width: 2;
+    transition: transform 0.3s ease;
   }
 
   &:hover {
     background: rgba(18, 53, 109, 0.1);
     color: #F1471C;
     transform: scale(1.05);
+
+    svg {
+      transform: rotate(180deg);
+    }
+
+    &::after {
+      content: attr(aria-label);
+      position: absolute;
+      bottom: -35px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #12356D;
+      color: white;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      white-space: nowrap;
+      opacity: 0;
+      animation: fadeIn 0.2s ease forwards;
+      z-index: 1000;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    &::before {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-left: 6px solid transparent;
+      border-right: 6px solid transparent;
+      border-bottom: 6px solid #12356D;
+      opacity: 0;
+      animation: fadeIn 0.2s ease forwards;
+      z-index: 1001;
+    }
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
   }
 }
 

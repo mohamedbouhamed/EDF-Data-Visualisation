@@ -7,7 +7,7 @@ import HC_map from 'highcharts/modules/map';
 import topology from '@highcharts/map-collection/custom/europe.topo.json';
 import { TranslateService, TranslateModule } from '@ngx-translate/core';
 import { Title } from '@angular/platform-browser';
-import { ThemeService } from './services/theme.service';
+import { ThemeService, ThemeMode } from './services/theme.service';
 
 HC_map(Highcharts);
 
@@ -32,6 +32,7 @@ export class AppComponent {
   topology: typeof topology = topology;
   isDropdownOpen = false;
   isDarkMode = false;
+  themeMode: ThemeMode = 'auto';
 
   constructor(
     private translate: TranslateService,
@@ -42,6 +43,9 @@ export class AppComponent {
     this.initializeTranslations();
     this.themeService.darkMode$.subscribe(isDark => {
       this.isDarkMode = isDark;
+    });
+    this.themeService.themeMode$.subscribe(mode => {
+      this.themeMode = mode;
     });
   }
 
