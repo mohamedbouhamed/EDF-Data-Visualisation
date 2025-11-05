@@ -20,3 +20,190 @@
         background-color: grey;
     }
   }
+
+  // Dark Theme
+  .dark-theme {
+    // Global colors
+    background-color: #1a1a2e;
+    color: #e4e4e7;
+
+    // Navigation
+    .nav-container {
+      background: #16213e !important;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+
+      .primary-nav {
+        background: #16213e !important;
+        border-bottom-color: rgba(255, 255, 255, 0.1) !important;
+      }
+    }
+
+    .logo {
+      filter: brightness(1.2);
+    }
+
+    .nav-link {
+      color: #e4e4e7 !important;
+
+      .nav-icon {
+        stroke: #e4e4e7 !important;
+      }
+
+      &:hover {
+        background: rgba(241, 71, 28, 0.1) !important;
+        color: #FF9800 !important;
+
+        .nav-icon {
+          stroke: #FF9800 !important;
+        }
+      }
+
+      &.active {
+        background: #F1471C !important;
+        color: white !important;
+
+        .nav-icon {
+          stroke: white !important;
+        }
+      }
+    }
+
+    .theme-toggle,
+    .language-selector {
+      background: rgba(255, 255, 255, 0.05) !important;
+      color: #e4e4e7 !important;
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.1) !important;
+      }
+    }
+
+    .lang-btn {
+      color: #e4e4e7 !important;
+
+      &.active {
+        background: #F1471C !important;
+        color: white !important;
+      }
+    }
+
+    // Home Page
+    .home-container {
+      background: #1a1a2e !important;
+    }
+
+    .page-title {
+      color: #FF9800 !important;
+    }
+
+    .stat-card,
+    .card {
+      background: #16213e !important;
+      border-color: rgba(255, 255, 255, 0.1) !important;
+      color: #e4e4e7 !important;
+
+      &.centrales:hover {
+        border-color: #FF9800 !important;
+      }
+
+      &.power:hover {
+        border-color: #FFB74D !important;
+      }
+
+      &.availability:hover {
+        border-color: #66BB6A !important;
+      }
+
+      &.reactors:hover {
+        border-color: #F1471C !important;
+      }
+    }
+
+    .stat-value,
+    h2 {
+      color: #FF9800 !important;
+    }
+
+    .stat-label,
+    p {
+      color: #a1a1aa !important;
+    }
+
+    .card-action {
+      color: #a1a1aa !important;
+
+      &:hover {
+        color: #FF9800 !important;
+      }
+    }
+
+    // Footer
+    .app-footer {
+      background: #16213e !important;
+      border-top-color: rgba(255, 255, 255, 0.1) !important;
+    }
+
+    .footer-text {
+      color: #e4e4e7 !important;
+    }
+
+    .footer-link {
+      color: #FF9800 !important;
+    }
+
+    // Badge
+    .made-by-badge {
+      background: linear-gradient(135deg, #F1471C 0%, #FF9800 100%) !important;
+    }
+
+    // Forms and Inputs
+    input,
+    select,
+    textarea {
+      background: #16213e !important;
+      color: #e4e4e7 !important;
+      border-color: rgba(255, 255, 255, 0.2) !important;
+
+      &:focus {
+        border-color: #FF9800 !important;
+      }
+    }
+
+    // Tables
+    table {
+      background: #16213e !important;
+      color: #e4e4e7 !important;
+    }
+
+    th,
+    td {
+      border-color: rgba(255, 255, 255, 0.1) !important;
+    }
+
+    // Information Page
+    .information-container {
+      background: #1a1a2e !important;
+      color: #e4e4e7 !important;
+    }
+
+    .info-section {
+      background: #16213e !important;
+      border-color: rgba(255, 255, 255, 0.1) !important;
+    }
+
+    .section-title {
+      color: #FF9800 !important;
+    }
+
+    // Centrale Panel
+    .centrale-panel {
+      background: #16213e !important;
+      color: #e4e4e7 !important;
+    }
+
+    // Loading Spinner
+    .spinner {
+      border-color: rgba(255, 255, 255, 0.1) !important;
+      border-top-color: #FF9800 !important;
+    }
+  }

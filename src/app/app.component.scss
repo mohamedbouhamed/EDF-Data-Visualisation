@@ -181,6 +181,38 @@
     }
   }
 }
+.nav-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.theme-toggle {
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 8px;
+  background: rgba(18, 53, 109, 0.05);
+  color: #12356D;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+
+  svg {
+    width: 20px;
+    height: 20px;
+    stroke-width: 2;
+  }
+
+  &:hover {
+    background: rgba(18, 53, 109, 0.1);
+    color: #F1471C;
+    transform: scale(1.05);
+  }
+}
+
 .language-selector {
   display: flex;
   gap: 4px;

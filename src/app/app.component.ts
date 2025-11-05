@@ -7,6 +7,7 @@ import HC_map from 'highcharts/modules/map';
 import topology from '@highcharts/map-collection/custom/europe.topo.json';
 import { TranslateService, TranslateModule } from '@ngx-translate/core';
 import { Title } from '@angular/platform-browser';
+import { ThemeService } from './services/theme.service';
 
 HC_map(Highcharts);
 
@@ -30,10 +31,18 @@ export class AppComponent {
   chartOptions: any;
   topology: typeof topology = topology;
   isDropdownOpen = false;
+  isDarkMode = false;
 
-  constructor(private translate: TranslateService, private titleService: Title) {
+  constructor(
+    private translate: TranslateService,
+    private titleService: Title,
+    public themeService: ThemeService
+  ) {
     // Langues supportées
     this.initializeTranslations();
+    this.themeService.darkMode$.subscribe(isDark => {
+      this.isDarkMode = isDark;
+    });
   }
 
   private initializeTranslations() {
@@ -49,6 +58,10 @@ export class AppComponent {
   switchLanguage(lang: string) {
     this.translate.use(lang);
     this.currentLang = lang;
+  }
+
+  toggleDarkMode() {
+    this.themeService.toggleDarkMode();
   }
 
   toggleDropdown(event: Event) {
