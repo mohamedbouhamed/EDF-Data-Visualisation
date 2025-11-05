@@ -100,7 +100,7 @@ export class MapComponent implements OnInit {
   private loadCentralesOnMap(): void {
     this.isLoading = true;
     
-    // Définition de l'icône
+    // Définition de l'icône principale
     const centraleIcon = L.icon({
       iconUrl: 'centraleNuc1.png',
       iconSize: [45, 45],
@@ -110,10 +110,13 @@ export class MapComponent implements OnInit {
   
     // Effacer tous les marqueurs existants
     this.map.eachLayer((layer) => {
-      if (layer instanceof L.Marker) {
+      if (layer instanceof L.Marker || layer instanceof L.Circle) {
         this.map.removeLayer(layer);
       }
     });
+  
+    // Map pour stocker les cercles de chaque centrale
+    const circlesMap = new Map<string, L.Circle[]>();
   
     this.datasetService.getDatasetAllRecords(
       this.getRefinementsForNow(),
@@ -124,29 +127,68 @@ export class MapComponent implements OnInit {
         this.datasets = data;
         this.dataset = data.results;
   
-        // Ajouter les nouveaux marqueurs
+        // Pour chaque centrale, récupérer les données de toutes ses tranches
         this.dataset.forEach((dispo) => {
           const { lat, lon } = dispo.point_gps_modifie_pour_afficher_la_carte_opendata;
           const marker = L.marker([lat, lon], { icon: centraleIcon })
             .addTo(this.map);
   
-          // Créer un popup mais ne pas le lier directement au marker
+          // Créer popup
           const popup = L.popup({
-            closeButton: false,  // Enlever le bouton de fermeture
-            className: 'custom-popup'  // Pour du styling custom si besoin
+            closeButton: false,
+            className: 'custom-popup'
           }).setContent(`<b>${dispo.centrale}</b>`);
   
-          // Gérer les événements hover
-          marker.on('mouseover',  (e) => {
-            popup.setLatLng(e.target.getLatLng()).openOn(this.map);
-          }, this);
+          // Récupérer les données des tranches
+          this.datasetService.getDatasetAllRecords(
+            this.getRefinementsForNow(),
+            ['tranche', 'puissance_disponible'],
+            `centrale = '${dispo.centrale}'`,
+            "tranche ASC"
+          ).subscribe(tranchesData => {
+            const circles: L.Circle[] = [];
+            
+            // Créer un cercle pour chaque tranche
+            tranchesData.results.forEach((tranche, index) => {
+              // Calculer la position du cercle autour du marqueur
+              const angle = (index * 2 * Math.PI) / tranchesData.results.length;
+              const radius = 30; // Rayon du cercle par rapport au marqueur
+              const circleLat = lat + Math.cos(angle) * 0.001;
+              const circleLon = lon + Math.sin(angle) * 0.001;
   
-          marker.on('mouseout',  () => {
-            this.map.closePopup(popup);
-          }, this);
+              // Déterminer la couleur en fonction de la puissance disponible
+              const disponibilite = tranche.puissance_disponible / 1400; // Supposant 1400MW max
+              const color = this.getColorFromDisponibilite(disponibilite);
   
-          marker.on('click', () => {
-            this.selectCentrale(dispo);
+              const circle = L.circle([circleLat, circleLon], {
+                color: color,
+                fillColor: color,
+                fillOpacity: 0.7,
+                radius: 200, // Taille du cercle en mètres
+                interactive: false // Pour que les cercles ne capturent pas les événements
+              });
+  
+              circles.push(circle);
+            });
+  
+            circlesMap.set(dispo.centrale, circles);
+  
+            // Événements hover
+            marker.on('mouseover', (e) => {
+              popup.setLatLng(e.target.getLatLng()).openOn(this.map);
+              // Afficher les cercles
+              circles.forEach(circle => circle.addTo(this.map));
+            });
+  
+            marker.on('mouseout', () => {
+              this.map.closePopup(popup);
+              // Cacher les cercles
+              circles.forEach(circle => this.map.removeLayer(circle));
+            });
+  
+            marker.on('click', () => {
+              this.selectCentrale(dispo);
+            });
           });
         });
   
@@ -162,6 +204,13 @@ export class MapComponent implements OnInit {
         this.isLoading = false;
       }
     });
+  }
+  
+  private getColorFromDisponibilite(disponibilite: number): string {
+    if (disponibilite >= 0.8) return '#2ecc71'; // Vert pour haute dispo
+    if (disponibilite >= 0.5) return '#f1c40f'; // Jaune pour moyenne dispo
+    if (disponibilite >= 0.2) return '#e67e22'; // Orange pour faible dispo
+    return '#e74c3c'; // Rouge pour très faible dispo
   }
   private updateHistogram(): void {
     // Au lieu de chercher par tranche, chercher par nom de centrale
