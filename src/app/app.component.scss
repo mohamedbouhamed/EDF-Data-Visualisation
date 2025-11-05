@@ -256,3 +256,57 @@
     }
   }
 }
+
+// Badge "Made by"
+.made-by-badge {
+  position: fixed;
+  bottom: 80px;
+  right: 24px;
+  background: linear-gradient(135deg, #12356D 0%, #F1471C 100%);
+  color: white;
+  padding: 10px 16px;
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 500;
+  box-shadow: 0 4px 12px rgba(18, 53, 109, 0.3);
+  transition: all 0.3s ease;
+  z-index: 999;
+
+  .badge-icon {
+    width: 18px;
+    height: 18px;
+    fill: white;
+  }
+
+  .badge-text {
+    white-space: nowrap;
+  }
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(18, 53, 109, 0.4);
+    background: linear-gradient(135deg, #F1471C 0%, #12356D 100%);
+  }
+}
+
+@media (max-width: 768px) {
+  .made-by-badge {
+    bottom: 60px;
+    right: 16px;
+    padding: 8px 12px;
+    font-size: 0.75rem;
+
+    .badge-icon {
+      width: 16px;
+      height: 16px;
+    }
+
+    .badge-text {
+      display: none;
+    }
+  }
+}
