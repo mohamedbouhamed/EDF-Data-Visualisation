@@ -30,3 +30,17 @@ npm install
 ```bash
 ng serve -o
 ```
+
+---
+
+## Auteur
+
+**Mohamed Bouhamed**
+Développeur de cette application de visualisation des centrales nucléaires EDF.
+
+- GitHub : [github.com/mohamedbouhamed](https://github.com/mohamedbouhamed)
+- Déploiements :
+  - Vercel : [angular-cyan-psi.vercel.app](https://angular-cyan-psi.vercel.app/)
+  - GitHub Pages : [mohamedbouhamed.github.io/EDF-Data-Visualisation](https://mohamedbouhamed.github.io/EDF-Data-Visualisation/)
+
+Ce projet a été développé pour permettre une visualisation interactive et en temps réel des disponibilités des centrales nucléaires EDF.
