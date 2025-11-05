@@ -47,6 +47,14 @@
       }
     },
     "HOME": {
+      "TITLE": "EDF Nuclear Fleet Dashboard",
+      "STATS": {
+        "LOADING": "Loading statistics...",
+        "CENTRALES": "Active Power Plants",
+        "POWER": "Available Power",
+        "AVAILABILITY": "Availability Rate",
+        "REACTORS": "Reactors in Operation"
+      },
       "CARDS": {
         "MAP": {
           "TITLE": "Interactive Map",

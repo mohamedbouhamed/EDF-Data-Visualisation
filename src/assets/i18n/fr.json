@@ -47,6 +47,14 @@
       }
     },
     "HOME": {
+      "TITLE": "Tableau de bord du parc nucléaire EDF",
+      "STATS": {
+        "LOADING": "Chargement des statistiques...",
+        "CENTRALES": "Centrales Actives",
+        "POWER": "Puissance Disponible",
+        "AVAILABILITY": "Taux de Disponibilité",
+        "REACTORS": "Réacteurs en Service"
+      },
       "CARDS": {
         "MAP": {
           "TITLE": "Carte Interactive",
