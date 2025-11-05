@@ -1,6 +1,16 @@
 {
   "name": "firstapp",
   "version": "0.0.0",
+  "description": "Application interactive de visualisation des disponibilités des centrales nucléaires EDF",
+  "author": {
+    "name": "Mohamed Bouhamed",
+    "url": "https://github.com/mohamedbouhamed"
+  },
+  "homepage": "https://angular-cyan-psi.vercel.app/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mohamedbouhamed/EDF-Data-Visualisation"
+  },
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
